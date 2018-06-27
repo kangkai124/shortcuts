@@ -12,6 +12,7 @@
 
 <script>
 import qcloud from 'wafer2-client-sdk'
+import { showSuccess } from '@/utils'
 export default {
   data () {
     return {
@@ -25,6 +26,7 @@ export default {
       qcloud.login({
         success: res => {
           console.log(res)
+          showSuccess(`${res.nickName}, 欢迎`)
         },
         fail: err => {
           console.log(err)

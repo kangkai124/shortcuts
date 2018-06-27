@@ -8,7 +8,8 @@
 		"newFeature": true
 	},
 	"miniprogramRoot": "./dist/",
-	"compileType": "miniprogram",
+  "compileType": "miniprogram",
+  "qcloudRoot": "./server/",
 	"appid": "wxe3afc92e2411af4c",
 	"projectname": "shortcuts",
 	"condition": {

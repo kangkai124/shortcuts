@@ -20,9 +20,9 @@ export default {
     },
     tabBar: {
       color: '#8a8a8a',
-      // selectedColor: '#f5f5f5',
+      selectedColor: '#333',
       // backgroundColor: '#393e46',
-      borderStyle: 'white',
+      // borderStyle: 'white',
       list: [
         {
           text: '口袋',

@@ -9,15 +9,20 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+@import './styles/variables';
+html, body {
+  height: 100%;
+}
 .container {
   height: 100%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+  justify-content: space-between; */
+  padding: 20rpx 0;
   box-sizing: border-box;
+  background-color: @background_color;
 }
 /* this rule will be remove */
 * {

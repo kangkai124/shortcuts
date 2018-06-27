@@ -1,24 +1,43 @@
-function formatNumber (n) {
-  const str = n.toString()
-  return str[1] ? str : `0${str}`
+import config from '../config'
+
+export const showSuccess = (title) => {
+  wx.showToast({
+    title,
+    icon: 'success'
+  })
 }
 
-export function formatTime (date) {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
-
-  const t1 = [year, month, day].map(formatNumber).join('/')
-  const t2 = [hour, minute, second].map(formatNumber).join(':')
-
-  return `${t1} ${t2}`
+export const showFail = (title) => {
+  wx.showToast({
+    title,
+    icon: 'none'
+  })
 }
 
-export default {
-  formatNumber,
-  formatTime
+export const showModal = (title, content) => {
+  wx.showModal({
+    title,
+    content,
+    showCancel: false
+  })
 }
+
+const request = (url, method, data) => new Promise((resolve, reject) => {
+  wx.request({
+    data,
+    method,
+    url: config.host + url,
+    success (res) {
+      if (res.data.code === 0) {
+        resolve(res.data)
+      } else {
+        // showModal('失败', res.data.data.msg);
+        reject(res.data)
+      }
+    }
+  })
+})
+
+export const get = (url, data) => request(url, 'GET', data)
+
+export const post = (url, data) => request(url, 'POST', data)
