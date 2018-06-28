@@ -1,16 +1,40 @@
 <template>
   <div class="container">
-    <i-input i-class="search" placeholder="请输入收货人姓名" />
+    <i-input i-class="search" placeholder="快捷键/内容..." :value="keyboardText"/>
+    <KeyBoard :text="keyboardText" @on-change="change"></KeyBoard>
   </div>
 </template>
 <script>
-export default {
+import KeyBoard from '../../components/KeyBoard'
 
+export default {
+  data () {
+    return {
+      keyboardText: ''
+    }
+  },
+  components: {
+    KeyBoard
+  },
+  methods: {
+    inputValue () {
+      console.log('click')
+    },
+    change (value) {
+      this.keyboardText = value
+    }
+  }
 }
 </script>
 <style lang="less">
   @import '../../styles/variables';
   .container {
-    padding-top: 100rpx;
+    padding-top: 40rpx;
+
+    .search {
+      width: 300px;
+      margin: 0 auto;
+      margin-bottom: 40rpx;
+    }
   }
 </style>
