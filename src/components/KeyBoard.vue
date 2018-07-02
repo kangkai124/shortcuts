@@ -14,10 +14,11 @@
         <li class="test" :key="i" v-for="(key, i) in list" v-text="key" @click="clickKey(key)"></li>
       </ul>
       <aside class="switch" @click="switchMode">
-        <img src="../../static/image/shift.png" />
+        <img v-if="normal" src="../../static/image/shift_color.png" />
+        <img v-else src="../../static/image/shift_colored.png" />
       </aside>
       <aside class="delete" @click="deleteWord">
-        <img src="../../static/image/backspace.png" />
+        <img src="../../static/image/backspace_color.png" />
       </aside>
     </ul>
     <!-- 控制键 -->
@@ -241,13 +242,15 @@ li:last-child {
     margin: 0 2px 2px 0;
     text-align: center;
 		background: #fff;
-		border: 1px solid #e5e5e5;
+		// border: 1px solid #e5e5e5;
+		border: 1px solid rgba(252, 81, 133, 0.706);
 		border-radius: 4px;
     position: absolute;
     bottom: 0;
     right: 4px;
 		&:active {
-			border-color: #999;
+			// border-color: #999;
+			border-color: #d4237a;
     }
     img {
       width: 20px;
@@ -260,6 +263,10 @@ li:last-child {
 
   .switch {
     left: 4px;
+    border-color: #95e1d3;
+    &:active {
+      border-color: #61c0bf;
+    }
   }
 }
 

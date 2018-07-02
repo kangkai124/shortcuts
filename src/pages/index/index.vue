@@ -16,6 +16,9 @@ export default {
   components: {
     KeyBoard
   },
+  onShareAppMessage () {
+
+  },
   methods: {
     inputValue () {
       console.log('click')
