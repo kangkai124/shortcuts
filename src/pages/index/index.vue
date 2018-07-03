@@ -14,7 +14,7 @@
       <ListItem
         v-for="item in list"
         :key="item.id"
-        :scKey="item.key"
+        :scKey="item.scKey"
         :content="item.content" />
     </div>
   </div>
@@ -26,7 +26,7 @@ import ListItem from '../../components/ListItem'
 export default {
   data () {
     return {
-      pageNum: 1,
+      pageNum: 0,
       more: true,
       list: [],
       text: '',
@@ -54,7 +54,7 @@ export default {
   methods: {
     async getShortCutList (init, option) {
       if (init) {
-        this.pageNum = 1
+        this.pageNum = 0
         this.more = true
       }
       const list = [...this.list]
@@ -81,7 +81,7 @@ export default {
     initialSclist () {
       this.text = ''
       this.placeholder = '请输入快捷键/功能...'
-      this.getShortCutList(true, { pageNum: 1 })
+      this.getShortCutList(true, { pageNum: 0 })
     }
 
   }

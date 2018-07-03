@@ -1,13 +1,13 @@
 const CONF = {
     // 其他配置 ...
-    // serverHost: 'localhost',
-    // tunnelServerUrl: '',
-    // tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
-    // qcloudAppId: '1256828632',
-    // qcloudSecretId: 'AKIDrgfggW8D5tfgBhy4eBjdq08JWgjlakjP',
-    // qcloudSecretKey: 'sgeZO6hEXr9ObefJ6yDSfox4fHsRuJfB',
-    // wxMessageToken: 'weixinmsgtoken',
-    // networkTimeout: 30000,
+    serverHost: 'localhost',
+    tunnelServerUrl: '',
+    tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
+    qcloudAppId: '1256828632',
+    qcloudSecretId: 'AKIDrgfggW8D5tfgBhy4eBjdq08JWgjlakjP',
+    qcloudSecretKey: 'sgeZO6hEXr9ObefJ6yDSfox4fHsRuJfB',
+    wxMessageToken: 'weixinmsgtoken',
+    networkTimeout: 30000,
 
     port: '5757',
     rootPathname: '',
@@ -31,8 +31,8 @@ const CONF = {
         port: 3306,
         user: 'root',
         db: 'kAuth',
-        pass: 'wxe3afc92e2411af4c',
-        // pass: 'fe',
+        // pass: 'wxe3afc92e2411af4c',
+        pass: 'fe',
         char: 'utf8mb4'
     },
 
