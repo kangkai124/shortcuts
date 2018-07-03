@@ -35,4 +35,7 @@ router.post('/message', controllers.message.post)
 // demo
 router.get('/demo', controllers.demo)
 
+// list
+router.get('/list', controllers.list)
+
 module.exports = router

@@ -8,6 +8,7 @@ export default {
   config: {
     'usingComponents': {
       'i-input': '/iview/input/index'
-    }
+    },
+    enablePullDownRefresh: true
   }
 }
