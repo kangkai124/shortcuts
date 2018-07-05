@@ -9,6 +9,7 @@ export default {
     'usingComponents': {
       'i-input': '/iview/input/index'
     },
-    enablePullDownRefresh: true
+    // enablePullDownRefresh: true,
+    onReachBottomDistance: 20
   }
 }

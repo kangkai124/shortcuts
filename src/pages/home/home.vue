@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <div class="top">
+    <div class="input-container" :class="inputClass">
       <div class="fake-input">
         <input
-          v-model="text"
+          :focus="focus"
+          :disabled="!canInput"
           :placeholder="placeholder"
+          v-model="text"
+          @click="onInputClick"
           @input="onTextChange"
           @focus="onTextFocus"
           @blur="onTextBlur" />
@@ -22,27 +25,29 @@
 <script>
 import { get } from '../../utils'
 import ListItem from '../../components/ListItem'
+import logoUrl from '../../../static/image/logo.png'
 
 export default {
   data () {
     return {
+      text: '',
+      logo: logoUrl,
+      placeholder: '请输入快捷键/功能...',
+      canInput: false,
       pageNum: 0,
       more: true,
       list: [],
-      text: '',
-      placeholder: '请输入快捷键/功能...'
+      focus: false
     }
   },
   components: { ListItem },
-  mounted () {
-    // this.initialSclist()
+  updated () {
+    console.log('update')
   },
-  // 小程序钩子
-  onShow () {
-    this.initialSclist()
-  },
-  onShareAppMessage () {
-
+  computed: {
+    inputClass () {
+      return this.canInput ? 'active-input' : 'default-input'
+    }
   },
   onPullDownRefresh () {
     this.initialSclist()
@@ -57,14 +62,12 @@ export default {
   },
   methods: {
     async getShortCutList (init, option) {
+      if (!this.canInput) return
       if (init) {
         this.pageNum = 0
         this.more = true
       }
       const list = [...this.list]
-      // FIXME  2018-07-03
-      // 不把 this.list 置为空数组，之后 this.list = res.data.list 无法更新 ListItem 子组件内容
-      this.list = []
       const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
       wx.stopPullDownRefresh()
       if (res.data.list.length < 10 && this.pageNum > 0) this.more = false
@@ -75,55 +78,93 @@ export default {
       }
     },
     onTextChange () {
+      console.log('text change')
       this.getShortCutList(true)
     },
     onTextFocus () {
+      console.log('text focus')
       this.placeholder = ''
+      this.focus = true
     },
     onTextBlur () {
+      console.log('text blur')
+      this.focus = false
       if (this.text === '') this.placeholder = '请输入快捷键/功能...'
+    },
+    onInputClick (e) {
+      console.log('text click')
+      if (!this.canInput) {
+        this.canInput = true
+        this.placeholder = ''
+        setTimeout(() => {
+          this.focus = true
+          this.initialSclist()
+        }, 500)
+      }
     },
     initialSclist () {
       this.text = ''
-      this.placeholder = '请输入快捷键/功能...'
       this.getShortCutList(true, { pageNum: 0 })
     }
-
   }
 }
 </script>
-<style lang="less">
-  @import '../../styles/variables';
-  .container {
-    padding-top: 0;
+<style lang="less" scoped>
+@import '../../styles/variables';
+.container {
+  position: relative;
 
-    .top {
-      padding: 10px 0;
-      line-height: 40px;
-      background-color: #ededee;
-      // border-bottom: 1px solid #333;
+  .input-container {
+      width: 100%;
+      height: 60px;
+      position: fixed;
+      transition: top 0.5s ease-in-out,
+                  height 0.3s ease-in-out 0.5s,
+                  background 0.3s ease-in-out  0.5s;
 
       .fake-input {
         width: 90%;
+        height: 100%;
         margin: 0 auto;
         border: @base_border;
         border-radius: 6px;
-        font-size: 12px;
-        background: url(../../../static/image/search.png) #fff no-repeat;
+        font-size: 14px;
+        background: url(../../../static/image/logo_s.png) #fff no-repeat;
         background-position: 18px center;
-        background-size: 18px;
+        background-size: 40px;
+        transition: all 0.3s ease-in-out .5s;
 
         input {
           width: 80%;
+          height: 100%;
           margin: 0 auto;
           text-align: center;
         }
       }
     }
 
+    .default-input {
+      top: 40%;
+      left: 0;
+    }
+
+    .active-input {
+      height: 50px;
+      background-color: #ededee;
+      top: 0;
+      left: 0;
+
+      .fake-input {
+        margin-top: 10px;
+        height: 30px;
+        background-size: 20px;
+      }
+    }
+
     .list {
       overflow: hidden;
+      margin-top: 50px;
       background-color: @background_color;
     }
-  }
+}
 </style>

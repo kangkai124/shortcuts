@@ -4,8 +4,8 @@ const CONF = {
     tunnelServerUrl: '',
     tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
     qcloudAppId: '1256828632',
-    qcloudSecretId: 'AKIDrgfggW8D5tfgBhy4eBjdq08JWgjlakjP',
-    qcloudSecretKey: 'sgeZO6hEXr9ObefJ6yDSfox4fHsRuJfB',
+    qcloudSecretId: 'AKIDGMErELxnJbeQxGFibGhtrb6MlxvfBRUI',
+    qcloudSecretKey: 'iBQQBhz1nJZaNtABxUlaCZhaFfrpY2IJ',
     wxMessageToken: 'weixinmsgtoken',
     networkTimeout: 30000,
 
@@ -30,8 +30,9 @@ const CONF = {
         host: 'localhost',
         port: 3306,
         user: 'root',
+        // db: 'cAuth',
+        // pass: 'wx855f643056738c40',
         db: 'kAuth',
-        // pass: 'wxe3afc92e2411af4c',
         pass: 'fe',
         char: 'utf8mb4'
     },
