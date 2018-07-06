@@ -14,6 +14,7 @@
           @input="onTextChange"
           @focus="onTextFocus"
           @blur="onTextBlur" />
+        <h5 class="clear" @click="clearText">x</h5>
       </div>
       <aside />
     </div>
@@ -90,6 +91,9 @@ export default {
     goBack () {
       console.log('go back')
       wx.switchTab({ url: '/pages/home/main' })
+    },
+    clearText () {
+      this.initialSclist()
     }
   }
 }
@@ -127,6 +131,7 @@ export default {
         flex: 7;
         display: flex;
         align-items: center;
+        position: relative;
         border: @base_border;
         border-radius: 6px;
         font-size: 12px;
@@ -138,6 +143,15 @@ export default {
           width: 80%;
           margin: 0 auto;
           text-align: center;
+        }
+
+        .clear {
+          width: 20px;
+          height: 30px;
+          line-height: 30px;
+          position: absolute;
+          top: 0;
+          right: 0;
         }
       }
     }

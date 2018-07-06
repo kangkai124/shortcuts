@@ -14,7 +14,8 @@ export default {
     pages: [
       'pages/me/main',
       'pages/index/main',
-      '^pages/home/main'
+      '^pages/home/main',
+      'pages/card/main'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -34,6 +35,12 @@ export default {
           pagePath: 'pages/home/main',
           iconPath: 'static/image/home.png',
           selectedIconPath: 'static/image/home_color.png'
+        },
+        {
+          text: '卡片',
+          pagePath: 'pages/card/main',
+          iconPath: 'static/image/excel.png',
+          selectedIconPath: 'static/image/excel_color.png'
         },
         {
           text: '我',

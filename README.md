@@ -1,4 +1,5 @@
 <p align="center"><img src="./static/image/logo.png" alt="pocket shortcut" width="200"></p>
+
 # shortcuts
 
 > help you find shortcuts such as excel, photoshop and so on.
@@ -20,6 +21,7 @@ npm run build --report
 ```
 
 ## TODO
+1. 搜索列表关键字高亮
 1. 模糊搜索，同时支持快捷键和中文查询
 2. 增加卡片页
 3. 用户登录页
