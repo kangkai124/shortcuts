@@ -32,8 +32,8 @@ export default {
         {
           text: '口袋',
           pagePath: 'pages/home/main',
-          iconPath: 'static/image/excel.png',
-          selectedIconPath: 'static/image/excel_color.png'
+          iconPath: 'static/image/home.png',
+          selectedIconPath: 'static/image/home_color.png'
         },
         {
           text: '我',

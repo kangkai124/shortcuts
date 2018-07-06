@@ -32,11 +32,12 @@ export default {
       return this.canInput ? 'active-input' : 'default-input'
     }
   },
-  onShow () {
-    // this.text = ''
-    // this.placeholder = '请输入快捷键/功能...'
-    // this.canInput = false
-    // this.focus = false
+  onHide () {
+    this.text = ''
+    this.placeholder = '请输入快捷键/功能...'
+    this.canInput = false
+    this.focus = false
+    this.cancel = false
   },
   onShareAppMessage () {
 

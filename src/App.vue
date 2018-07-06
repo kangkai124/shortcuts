@@ -24,6 +24,10 @@ html, body {
   box-sizing: border-box;
   background-color: @background_color;
 }
+.icon {
+  width: 30px;
+  height: 30px;
+}
 /* this rule will be remove */
 * {
   transition: width 2s;
