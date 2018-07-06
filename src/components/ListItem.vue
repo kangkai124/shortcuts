@@ -1,12 +1,16 @@
 <template>
-  <div class="list-item">
-    <h2>{{scKey}}</h2>
-    <p>{{content}}</p>
+  <div class="list-container">
+    <div class="list-item"
+      v-for="item in list"
+      :key="item.id">
+      <h2>{{item.scKey}}</h2>
+      <p>{{item.content}}</p>
+    </div>
   </div>
 </template>
 <script>
 export default {
-  props: ['scKey', 'content']
+  props: ['list']
 }
 </script>
 <style lang="less" scoped>

@@ -8,103 +8,67 @@
           :placeholder="placeholder"
           v-model="text"
           @click="onInputClick"
-          @input="onTextChange"
           @focus="onTextFocus"
-          @blur="onTextBlur" />
+          @blur="onTextBlur"
+          @confirm="onInputConfirm" />
       </div>
-    </div>
-    <div class="list">
-      <ListItem
-        v-for="item in list"
-        :key="item.id"
-        :scKey="item.scKey"
-        :content="item.content" />
+      <aside v-if="cancel" @click="onCancelClick">取消</aside>
     </div>
   </div>
 </template>
 <script>
-import { get } from '../../utils'
-import ListItem from '../../components/ListItem'
-import logoUrl from '../../../static/image/logo.png'
-
 export default {
   data () {
     return {
       text: '',
-      logo: logoUrl,
       placeholder: '请输入快捷键/功能...',
       canInput: false,
-      pageNum: 0,
-      more: true,
-      list: [],
-      focus: false
+      focus: false,
+      cancel: false
     }
-  },
-  components: { ListItem },
-  updated () {
-    console.log('update')
   },
   computed: {
     inputClass () {
       return this.canInput ? 'active-input' : 'default-input'
     }
   },
-  onPullDownRefresh () {
-    this.initialSclist()
+  onShow () {
+    // this.text = ''
+    // this.placeholder = '请输入快捷键/功能...'
+    // this.canInput = false
+    // this.focus = false
   },
-  onReachBottom () {
-    if (this.more) {
-      this.pageNum = this.pageNum + 1
-      this.getShortCutList()
-    } else {
-      console.log('已经加载全部了...')
-    }
+  onShareAppMessage () {
+
   },
   methods: {
-    async getShortCutList (init, option) {
-      if (!this.canInput) return
-      if (init) {
-        this.pageNum = 0
-        this.more = true
-      }
-      const list = [...this.list]
-      const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
-      wx.stopPullDownRefresh()
-      if (res.data.list.length < 10 && this.pageNum > 0) this.more = false
-      if (init) {
-        this.list = res.data.list
-      } else {
-        this.list = list.concat(res.data.list)
-      }
-    },
-    onTextChange () {
-      console.log('text change')
-      this.getShortCutList(true)
-    },
     onTextFocus () {
-      console.log('text focus')
       this.placeholder = ''
       this.focus = true
     },
     onTextBlur () {
-      console.log('text blur')
       this.focus = false
-      if (this.text === '') this.placeholder = '请输入快捷键/功能...'
+      if (this.text === '') {
+        this.placeholder = '请输入快捷键/功能...'
+      }
     },
     onInputClick (e) {
-      console.log('text click')
       if (!this.canInput) {
         this.canInput = true
         this.placeholder = ''
         setTimeout(() => {
           this.focus = true
-          this.initialSclist()
-        }, 500)
+          this.cancel = true
+        }, 200)
       }
     },
-    initialSclist () {
-      this.text = ''
-      this.getShortCutList(true, { pageNum: 0 })
+    onInputConfirm () {
+      wx.navigateTo({ url: `/pages/index/main?query=${this.text}` })
+    },
+    onCancelClick () {
+      this.canInput = false
+      this.focus = false
+      this.cancel = false
     }
   }
 }
@@ -118,53 +82,67 @@ export default {
       width: 100%;
       height: 60px;
       position: fixed;
-      transition: top 0.5s ease-in-out,
-                  height 0.3s ease-in-out 0.5s,
-                  background 0.3s ease-in-out  0.5s;
+      top: 40%;
+      left: 0;
+
 
       .fake-input {
         width: 90%;
         height: 100%;
-        margin: 0 auto;
         border: @base_border;
         border-radius: 6px;
+        margin-left: auto;
+        margin-right: auto;
         font-size: 14px;
         background: url(../../../static/image/logo_s.png) #fff no-repeat;
         background-position: 18px center;
         background-size: 40px;
-        transition: all 0.3s ease-in-out .5s;
+        // transition: width 0.2s ease-in-out 0.2s;
 
         input {
           width: 80%;
-          height: 100%;
-          margin: 0 auto;
+          height: 30px;
+          margin: 15px auto;
           text-align: center;
         }
+      }
+
+      aside {
+        width: calc(~'16% - 12px');
+        height: 60px;
+        line-height: 60px;
+        font-size: 12px;
+        text-align: center;
+        color: @sub_color;
+        position: absolute;
+        top: 0;
+        right: 0;
       }
     }
 
     .default-input {
-      top: 40%;
-      left: 0;
+      transition: top 0.2s ease-in-out,
+                  height 0.2s ease-in-out 0.2s;
     }
 
     .active-input {
-      height: 50px;
       background-color: #ededee;
       top: 0;
-      left: 0;
+      transition: top 0.2s ease-in-out,
+                  height 0.2s ease-in-out 0.2s,
+                  background 0.2s ease-in-out  0.2s;
 
       .fake-input {
-        margin-top: 10px;
+        width: 84%;
+        margin-top: 15px;
+        margin-left: 10px;
         height: 30px;
         background-size: 20px;
-      }
-    }
 
-    .list {
-      overflow: hidden;
-      margin-top: 50px;
-      background-color: @background_color;
+        input {
+          margin: 0 auto;
+        }
+      }
     }
 }
 </style>

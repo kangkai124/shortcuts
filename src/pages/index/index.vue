@@ -10,12 +10,8 @@
           @blur="onTextBlur" />
       </div>
     </div>
-    <div class="list">
-      <ListItem
-        v-for="item in list"
-        :key="item.id"
-        :scKey="item.scKey"
-        :content="item.content" />
+    <div class="list" v-if="list.length > 0">
+      <ListItem :list="list" />
     </div>
   </div>
 </template>
@@ -34,12 +30,12 @@ export default {
     }
   },
   components: { ListItem },
-  mounted () {
-    // this.initialSclist()
-  },
   // 小程序钩子
   onShow () {
-    this.initialSclist()
+    const { query = '' } = this.$root.$mp.query
+    console.log(query)
+    this.text = query
+    this.getShortCutList(true)
   },
   onShareAppMessage () {
 
@@ -61,17 +57,13 @@ export default {
         this.pageNum = 0
         this.more = true
       }
-      const list = [...this.list]
-      // FIXME  2018-07-03
-      // 不把 this.list 置为空数组，之后 this.list = res.data.list 无法更新 ListItem 子组件内容
-      this.list = []
       const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
       wx.stopPullDownRefresh()
       if (res.data.list.length < 10 && this.pageNum > 0) this.more = false
       if (init) {
         this.list = res.data.list
       } else {
-        this.list = list.concat(res.data.list)
+        this.list = this.list.concat(res.data.list)
       }
     },
     onTextChange () {
@@ -86,7 +78,7 @@ export default {
     initialSclist () {
       this.text = ''
       this.placeholder = '请输入快捷键/功能...'
-      this.getShortCutList(true, { pageNum: 0 })
+      this.getShortCutList(true)
     }
 
   }
@@ -98,20 +90,24 @@ export default {
     padding-top: 0;
 
     .top {
-      padding: 10px 0;
-      line-height: 40px;
+      width: 100%;
+      height: 50px;
       background-color: #ededee;
-      // border-bottom: 1px solid #333;
+      position: fixed;
+      top: 0;
+      left: 0;
 
       .fake-input {
         width: 90%;
+        height: 30px;
         margin: 0 auto;
+        margin-top: 10px;
         border: @base_border;
         border-radius: 6px;
         font-size: 12px;
-        background: url(../../../static/image/search.png) #fff no-repeat;
+        background: url(../../../static/image/logo_s.png) #fff no-repeat;
         background-position: 18px center;
-        background-size: 18px;
+        background-size: 20px;
 
         input {
           width: 80%;
@@ -123,6 +119,7 @@ export default {
 
     .list {
       overflow: hidden;
+      margin-top: 50px;
       background-color: @background_color;
     }
   }
