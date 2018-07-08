@@ -1,8 +1,8 @@
 const { mysql } = require('../qcloud')
 
 module.exports = async ctx => {
-    const { pageNum, scKey } = ctx.request.query
-    const PAGE_SIZE = 10
+    const { pageNum, scKey, pageSize } = ctx.request.query
+    const PAGE_SIZE = pageSize || 20
     let data
     const select = mysql('excel')
       .select('id', 'scKey', 'content', 'star')

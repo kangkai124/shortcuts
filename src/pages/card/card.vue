@@ -1,49 +1,120 @@
 <template>
 <div class="card-container">
   <swiper
-    style="height: 300px;margin-top: 40px;perspective: 1200px;"
+    style="height: 60vh;margin-top: 40px;"
     :indicator-dots="dots"
-    previous-margin="30px"
-    next-margin="30px"
+    :current="current"
+    previous-margin="60px"
+    next-margin="60px"
     duration="1000"
     @change="onSlideChange">
-      <swiper-item :key="i" v-for="(item, i) in cards">
-        <div class="item">
-          {{item}}
+    <div :key="i" v-for="(item, i) in cards">
+      <swiper-item>
+        <div class="item" :class="{normal: i !== current}">
+          <h2>{{item.scKey}}</h2>
+          <p>{{item.content}}</p>
           </div>
       </swiper-item>
+    </div>
   </swiper>
+  <div class="bottom">
+    <div class="useless">
+      <h5><img src="../../../static/image/dislike.png" /></h5>
+    </div>
+    <div class="star">
+      <h5><img src="../../../static/image/like.png" /></h5>
+    </div>
+  </div>
 </div>
 </template>
 <script>
+import { get } from '../../utils'
+
 export default {
   data () {
     return {
-      cards: [1, 2, 3, 4, 5, 6, 7],
-      dots: false
+      cards: [],
+      dots: false,
+      current: 0
     }
   },
   onShow () {
-
+    this.getShortCutList()
   },
   methods: {
     onSlideChange (event, a) {
-      console.log(event, a)
-    }
+      this.current = event.mp.detail.current
+    },
+    async getShortCutList () {
+      const res = await get('/weapp/list', { pageNum: 0, pageSize: 999 })
+      this.cards = res.data.list
+    },
   }
 }
 </script>
 <style lang="less">
+@import '../../styles/variables';
+
 .card-container {
   height: 100%;
   overflow: hidden;
 
   .item {
-    width: 200px;
-    height: 300px;
+    width: 90%;
+    height: 58vh;
     margin: 0 auto;
-    transform-style: preserve-3d;
-    background-color: aliceblue;
+    border-radius: 6px;
+    box-shadow: 0 0 4px @divider_color;
+    transition: all .2s ease-in-out;
+    border: @base_border;
+
+    h2 {
+      font-size: 16px;
+      height: 10vh;
+      line-height: 10vh;
+      text-align: center;
+      color: #f44032;
+    }
+
+    p {
+      font-size: 14px;
+      padding: 0 10px;
+      color: @sub_color;
+    }
   }
+
+  .normal {
+    transform: scale(0.8)
+  }
+
+  .bottom {
+    height: calc(~'40vh - 40px');
+    display: flex;
+
+    div {
+      flex: 1;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      h5 {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 6px solid #eeeff1;
+        border-radius: 50%;
+      }
+
+      img {
+        width: 36px;
+        height: 36px;
+
+      }
+    }
+  }
+
 }
 </style>
