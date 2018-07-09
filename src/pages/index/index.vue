@@ -2,11 +2,11 @@
   <div class="container">
     <div class="top">
       <img
-      class="icon"
-      mode="aspectFit"
-      src='../../../static/image/home_color.png'
-      alt="back"
-      @click="goBack" />
+        class="icon"
+        mode="aspectFit"
+        src='../../../static/image/home_color.png'
+        alt="back"
+        @click="goBack" />
       <div class="fake-input">
         <input
           v-model="text"
@@ -19,7 +19,7 @@
       <aside />
     </div>
     <div class="list" v-if="list.length > 0">
-      <ListItem :list="list" />
+      <ListItem :list="list" :query="text" />
     </div>
   </div>
 </template>
