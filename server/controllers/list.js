@@ -1,4 +1,5 @@
 const { mysql } = require('../qcloud')
+const { without, symmetricDifference } = require('ramda')
 
 module.exports = async ctx => {
     const { pageNum, scKey, pageSize } = ctx.request.query
@@ -7,20 +8,26 @@ module.exports = async ctx => {
     const select = mysql('excel')
       .select('id', 'scKey', 'content', 'star')
 
-    // if (scKey) {
-    //     data = list.filter(l => l.key.toLocaleLowerCase().includes(scKey.toLocaleLowerCase()))
-    // }
-
-    // if (pageNum) {
-    //     data = data.slice(start, end + 1)
-    // }
-
     if (scKey) {
-        data = await select
-      .where('scKey', 'like', `${scKey}%`)
-      // .orWhere('scKey', 'like', `%${scKey}%`)
-      .limit(PAGE_SIZE)
-      .offset(Number(pageNum) * PAGE_SIZE)
+        if (scKey.split(' ').length > 1) {
+
+        } else {
+          // 单个参数查询
+            console.log(scKey)
+            const highMatch = await select
+              .where('scKey', 'like', `${scKey}%`)
+            const fuzzyMatch = await select
+              .clearWhere()
+              .where('scKey', 'like', `%${scKey}%`)
+            const contentMatch = await select
+              .clearWhere()
+              .where('content', 'like', `%${scKey}%`)
+            const withoutData = without(highMatch)(fuzzyMatch)
+            const allData = symmetricDifference(highMatch.concat(withoutData))(contentMatch)
+            const start = pageNum * PAGE_SIZE
+            const end = pageNum + PAGE_SIZE
+            data = allData.slice(start, end)
+        }
     } else {
         data = await select
     .limit(PAGE_SIZE)

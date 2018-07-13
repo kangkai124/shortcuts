@@ -20,7 +20,9 @@
     </div>
     <div class="list" v-if="list.length > 0">
       <ListItem :list="list" :query="text" />
+      <p class="no-more" v-if="!more">已经到最底部了</p>
     </div>
+    <div v-else class="no-content">╮(╯▽╰)╭ 没有"{{text}}"的搜索结果</div>
   </div>
 </template>
 <script>
@@ -56,7 +58,7 @@ export default {
       this.pageNum = this.pageNum + 1
       this.getShortCutList()
     } else {
-      console.log('已经加载全部了...')
+      console.log('没有更多了')
     }
   },
   methods: {
@@ -67,7 +69,7 @@ export default {
       }
       const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
       wx.stopPullDownRefresh()
-      if (res.data.list.length < 10 && this.pageNum > 0) this.more = false
+      if (res.data.list.length < 20 && this.pageNum > 0) this.more = false
       if (init) {
         this.list = res.data.list
       } else {
@@ -160,6 +162,23 @@ export default {
       overflow: hidden;
       margin-top: 50px;
       background-color: @background_color;
+
+      .no-more {
+        font-size: 12px;
+        color: @sub_color;
+        text-align: center;
+        padding: 10px 0;
+      }
+    }
+
+    .no-content {
+      overflow: hidden;
+      margin-top: 50px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 12px;
+      color: @sub_color;
+      text-align: center;
     }
   }
 </style>
