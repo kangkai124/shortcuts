@@ -13,16 +13,17 @@ export default {
 @import './styles/variables';
 html, body {
   height: 100%;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 .container {
   height: 100%;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between; */
   padding: 20rpx 0;
   box-sizing: border-box;
-  background-color: @background_color;
 }
 .icon {
   width: 30px;

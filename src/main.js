@@ -19,36 +19,36 @@ export default {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#f38181',
+      navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '口袋Excel',
-      navigationBarTextStyle: 'light'
-    },
-    tabBar: {
-      color: '#8a8a8a',
-      selectedColor: '#333',
-      // rgb(86,184,183)
-      // backgroundColor: '#393e46',
-      // borderStyle: 'white',
-      list: [
-        {
-          text: '口袋',
-          pagePath: 'pages/home/main',
-          iconPath: 'static/image/home.png',
-          selectedIconPath: 'static/image/home_color.png'
-        },
-        {
-          text: '卡片',
-          pagePath: 'pages/card/main',
-          iconPath: 'static/image/excel.png',
-          selectedIconPath: 'static/image/excel_color.png'
-        },
-        {
-          text: '我',
-          pagePath: 'pages/me/main',
-          iconPath: 'static/image/me.png',
-          selectedIconPath: 'static/image/me_color.png'
-        }
-      ]
+      navigationBarTextStyle: 'black'
     }
+    // tabBar: {
+    //   color: '#8a8a8a',
+    //   selectedColor: '#333',
+    //   // rgb(86,184,183)
+    //   // backgroundColor: '#393e46',
+    //   // borderStyle: 'white',
+    //   list: [
+    //     {
+    //       text: '口袋',
+    //       pagePath: 'pages/home/main',
+    //       iconPath: 'static/image/home.png',
+    //       selectedIconPath: 'static/image/home_color.png'
+    //     },
+    //     {
+    //       text: '卡片',
+    //       pagePath: 'pages/card/main',
+    //       iconPath: 'static/image/excel.png',
+    //       selectedIconPath: 'static/image/excel_color.png'
+    //     },
+    //     {
+    //       text: '我',
+    //       pagePath: 'pages/me/main',
+    //       iconPath: 'static/image/me.png',
+    //       selectedIconPath: 'static/image/me_color.png'
+    //     }
+    //   ]
+    // }
   }
 }

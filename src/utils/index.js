@@ -14,6 +14,12 @@ export const showFail = (title) => {
   })
 }
 
+export const showLoading = (title) => {
+  wx.showLoading({
+    title
+  })
+}
+
 export const showModal = (title, content) => {
   wx.showModal({
     title,

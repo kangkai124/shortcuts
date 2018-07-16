@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import { get } from '../../utils'
+import { get, showLoading } from '../../utils'
 import ListItem from '../../components/ListItem'
 
 export default {
@@ -43,6 +43,7 @@ export default {
   // 小程序钩子
   onShow () {
     wx.setNavigationBarTitle({ title: '快捷键列表' })
+    showLoading('加载中...')
     const { query = '' } = this.$root.$mp.query
     this.text = query
     this.getShortCutList(true)
@@ -69,6 +70,7 @@ export default {
       }
       const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
       wx.stopPullDownRefresh()
+      wx.hideLoading()
       if (res.data.list.length < 20 && this.pageNum > 0) this.more = false
       if (init) {
         this.list = res.data.list

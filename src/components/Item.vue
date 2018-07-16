@@ -56,7 +56,6 @@ export default {
     getContent () {
       if (this.query) {
         const index = this.item.content.toLowerCase().indexOf(this.query.toLowerCase())
-        console.log(index)
         if (index > -1) {
           const len = this.query.length
           const previous = this.item.content.slice(0, index)
