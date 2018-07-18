@@ -1,6 +1,7 @@
 <template>
-  <div class="list-container">
+  <div class="list-container" @click="toCardPage($event)">
     <div
+      :data-id="item.id"
       class="list-item"
       v-for="item in list"
       :key="item.id">
@@ -12,7 +13,12 @@
 import Item from './Item'
 export default {
   props: ['list', 'query'],
-  components: { Item }
+  components: { Item },
+  methods: {
+    toCardPage (event) {
+      console.log(event)
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

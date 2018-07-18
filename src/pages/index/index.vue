@@ -22,7 +22,7 @@
       <ListItem :list="list" :query="text" />
       <p class="no-more" v-if="!more">已经到最底部了</p>
     </div>
-    <div v-else class="no-content">╮(╯▽╰)╭ 没有"{{text}}"的搜索结果</div>
+    <div v-if="list.length === 0 && !isFetching" class="no-content">╮(╯▽╰)╭ 没有"{{text}}"的搜索结果</div>
   </div>
 </template>
 <script>
@@ -36,7 +36,8 @@ export default {
       more: true,
       list: [],
       text: '',
-      placeholder: '请输入快捷键/功能...'
+      placeholder: '请输入快捷键/功能...',
+      isFetching: true
     }
   },
   components: { ListItem },
@@ -68,7 +69,9 @@ export default {
         this.pageNum = 0
         this.more = true
       }
+      this.isFetching = true
       const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
+      this.isFetching = false
       wx.stopPullDownRefresh()
       wx.hideLoading()
       if (res.data.list.length < 20 && this.pageNum > 0) this.more = false

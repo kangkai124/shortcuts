@@ -8,7 +8,7 @@
           :focus="focus"
           :disabled="!canInput"
           placeholder="请输入快捷键/内容"
-          :placeholder-style="phStyle"
+          :placeholder-class="phClass"
           v-model="text"
           @click="onInputClick"
           @focus="onTextFocus"
@@ -17,14 +17,12 @@
       </div>
     </div>
     <div class="tab-bar">
-      <div>卡片浏览</div>
-      <div>我的收藏</div>
+      <div @click="toCard">卡片浏览</div>
+      <div @click="toStar">我的收藏</div>
     </div>
   </div>
 </template>
 <script>
-const defaultPhStyle = 'color: #7b7b7b;font-family: "pingfang", sans-serif;'
-const activePhStyle = 'color: #ababab;font-family: "pingfang", sans-serif;'
 const defaultPh = '请输入快捷键/功能...'
 export default {
   data () {
@@ -33,13 +31,19 @@ export default {
       canInput: false,
       focus: false,
       cancel: false,
-      phStyle: defaultPhStyle
+      phClass: 'default-placeholder'
     }
   },
   computed: {
     inputClass () {
       return this.canInput ? 'active' : 'default'
     }
+  },
+  onShow () {
+    //
+  },
+  deactivated() {
+    console.log('deactivated deactivated')
   },
   onHide () {
     this.text = ''
@@ -61,7 +65,7 @@ export default {
       if (!this.canInput) {
         this.canInput = true
         this.cancel = true
-        this.phStyle = activePhStyle
+        this.phClass = 'active-placeholder'
         setTimeout(() => {
           this.focus = true
         }, 200)
@@ -71,10 +75,24 @@ export default {
       wx.navigateTo({ url: `/pages/index/main?query=${this.text}` })
     },
     onCancelClick () {
+      this.text = ''
       this.canInput = false
       this.focus = false
       this.cancel = false
-      this.phStyle = defaultPhStyle
+      this.phClass = 'default-placeholder'
+    },
+    toCard () {
+      wx.navigateTo({ url: '/pages/card/main' })
+    },
+    toStar () {
+      wx.navigateTo({ url: '/pages/me/main'})
+    },
+    reset () {
+      this.text = ''
+      this.canInput = false
+      this.focus = false
+      this.cancel = false
+      this.phClass = 'default-placeholder'
     }
   }
 }
@@ -175,5 +193,15 @@ export default {
       background: darken(#a8e6cf, 10%)
     }
   }
+}
+
+.default-placeholder {
+  color: #7b7b7b;
+  font-weight: 100;
+}
+
+.active-placeholder {
+  color: #ababab;
+  font-weight: 100;
 }
 </style>

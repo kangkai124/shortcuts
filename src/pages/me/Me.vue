@@ -20,6 +20,7 @@
     <ul class="list">
       <li
         class="list-item"
+        @click="navigate(item.link)"
         v-for="(item, i) in list"
         :key="i">
         <h2><img :src="item.icon" alt="item.text"></h2>
@@ -80,9 +81,12 @@ export default {
     },
     genList () {
       this.list = [
-        { text: '消息中心', link: '', icon: message },
-        { text: '我的收藏', link: '', icon: like }
+        { text: '消息中心', link: '/pages/message/main', icon: message },
+        { text: '我的收藏', link: '/pages/star/main', icon: like }
       ]
+    },
+    navigate (link) {
+      wx.navigateTo({ url: link })
     }
   },
 

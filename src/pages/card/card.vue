@@ -6,7 +6,7 @@
     :current="current"
     previous-margin="60px"
     next-margin="60px"
-    duration="1000"
+    duration="200"
     @change="onSlideChange">
     <div :key="i" v-for="(item, i) in cards">
       <swiper-item>
@@ -28,7 +28,7 @@
 </div>
 </template>
 <script>
-import { get } from '../../utils'
+import { get, showLoading } from '../../utils'
 
 export default {
   data () {
@@ -38,7 +38,7 @@ export default {
       current: 0
     }
   },
-  onShow () {
+  mounted () {
     this.getShortCutList()
   },
   methods: {
@@ -46,8 +46,12 @@ export default {
       this.current = event.mp.detail.current
     },
     async getShortCutList () {
+      showLoading('加载中...')
       const res = await get('/weapp/list', { pageNum: 0, pageSize: 999 })
       this.cards = res.data.list
+      setTimeout(() => {
+        wx.hideLoading()
+      }, 300)
     },
   }
 }
@@ -58,15 +62,17 @@ export default {
 .card-container {
   height: 100%;
   overflow: hidden;
+  // background: #e3fdfd;
 
   .item {
     width: 90%;
     height: 58vh;
     margin: 0 auto;
     border-radius: 6px;
-    box-shadow: 0 0 4px @divider_color;
+    box-shadow: 0 0 8px #cbf1f5;
     transition: all .2s ease-in-out;
-    border: @base_border;
+    border: 1px solid #cbf1f5;
+    background-color: #fff;
 
     h2 {
       font-size: 16px;

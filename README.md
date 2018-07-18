@@ -31,3 +31,7 @@ npm run build --report
 7. 增加权限
 8. 支持多参搜索
 9. 卡片内容重新设计
+
+## issues
+1. 首页跳转到列表页，返回后搜索框应该在中间，且不应该有从上下来的动画
+2. placeholder active 状态下 placeholder-class 属性不起作用

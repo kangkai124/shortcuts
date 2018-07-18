@@ -1,5 +1,5 @@
 const { mysql } = require('../qcloud')
-const { without, symmetricDifference } = require('ramda')
+const { difference } = require('ramda')
 
 module.exports = async ctx => {
     const { pageNum, scKey, pageSize } = ctx.request.query
@@ -22,10 +22,12 @@ module.exports = async ctx => {
             const contentMatch = await select
               .clearWhere()
               .where('content', 'like', `%${scKey}%`)
-            const withoutData = without(highMatch)(fuzzyMatch)
-            const allData = symmetricDifference(highMatch.concat(withoutData))(contentMatch)
+            const withoutData = difference(fuzzyMatch)(highMatch)
+            const scKeyData = highMatch.concat(withoutData)
+            const onlyContentData = difference(contentMatch)(scKeyData)
+            const allData = scKeyData.concat(onlyContentData)
             const start = pageNum * PAGE_SIZE
-            const end = pageNum + PAGE_SIZE
+            const end = pageNum * PAGE_SIZE + PAGE_SIZE
             data = allData.slice(start, end)
         }
     } else {

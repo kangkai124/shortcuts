@@ -15,7 +15,9 @@ export default {
       'pages/me/main',
       'pages/index/main',
       '^pages/home/main',
-      'pages/card/main'
+      'pages/card/main',
+      'pages/star/main',
+      'pages/message/main'
     ],
     window: {
       backgroundTextStyle: 'light',
