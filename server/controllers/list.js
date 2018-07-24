@@ -2,7 +2,7 @@ const { mysql } = require('../qcloud')
 const { difference } = require('ramda')
 
 module.exports = async ctx => {
-    const { pageNum, scKey, pageSize } = ctx.request.query
+    const { pageNum, scKey, pageSize, openId } = ctx.request.query
     const PAGE_SIZE = pageSize || 20
     let data
     const select = mysql('excel')
@@ -13,7 +13,6 @@ module.exports = async ctx => {
 
         } else {
           // 单个参数查询
-            console.log(scKey)
             const highMatch = await select
               .where('scKey', 'like', `${scKey}%`)
             const fuzzyMatch = await select
@@ -31,9 +30,13 @@ module.exports = async ctx => {
             data = allData.slice(start, end)
         }
     } else {
-        data = await select
-    .limit(PAGE_SIZE)
-    .offset(Number(pageNum) * PAGE_SIZE)
+        if (openId) {
+
+        } else {
+            data = await select
+              .limit(PAGE_SIZE)
+              .offset(Number(pageNum) * PAGE_SIZE)
+        }
     }
 
     ctx.state.data = {

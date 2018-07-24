@@ -16,9 +16,12 @@
           @confirm="onInputConfirm" />
       </div>
     </div>
-    <div class="tab-bar">
-      <div @click="toCard">卡片浏览</div>
-      <div @click="toStar">我的收藏</div>
+    <div class="bottom" :style="{display: showBottom ? 'block': 'none' }">
+      <div class="top">高频快捷键</div>
+      <div class="tab-bar">
+        <div @click="toCard">卡片浏览</div>
+        <div @click="toStar">我的收藏</div>
+      </div>
     </div>
   </div>
 </template>
@@ -31,6 +34,7 @@ export default {
       canInput: false,
       focus: false,
       cancel: false,
+      showBottom: true,
       phClass: 'default-placeholder'
     }
   },
@@ -50,6 +54,7 @@ export default {
     this.canInput = false
     this.focus = false
     this.cancel = false
+    this.showBottom = true
   },
   onShareAppMessage () {
 
@@ -65,6 +70,7 @@ export default {
       if (!this.canInput) {
         this.canInput = true
         this.cancel = true
+        this.showBottom = false
         this.phClass = 'active-placeholder'
         setTimeout(() => {
           this.focus = true
@@ -79,6 +85,7 @@ export default {
       this.canInput = false
       this.focus = false
       this.cancel = false
+      this.showBottom = true
       this.phClass = 'default-placeholder'
     },
     toCard () {
@@ -171,29 +178,6 @@ export default {
       }
     }
 }
-.tab-bar {
-  width: 100%;
-  height: 100px;
-  display: flex;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  justify-content: center;
-
-  div {
-    flex: 1;
-    height: 100%;
-    line-height: 100px;
-    background: #a8e6cf;
-    color: #fff;
-    font-size: 20px;
-    text-align: center;
-
-    &:active {
-      background: darken(#a8e6cf, 10%)
-    }
-  }
-}
 
 .default-placeholder {
   color: #7b7b7b;
@@ -203,5 +187,41 @@ export default {
 .active-placeholder {
   color: #ababab;
   font-weight: 100;
+}
+
+.bottom {
+  width: 100%;
+  height: 200px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  .top {
+    height: 100px;
+    font-size: 14px;
+    color: #a8e6cf;
+    text-align: center;
+  }
+
+  .tab-bar {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+
+    div {
+      flex: 1;
+      height: 100%;
+      line-height: 100px;
+      background: #a8e6cf;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+
+      &:active {
+        background: darken(#a8e6cf, 10%)
+      }
+    }
+  }
 }
 </style>
