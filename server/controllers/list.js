@@ -31,7 +31,15 @@ module.exports = async ctx => {
         }
     } else {
         if (openId) {
-
+          // knex.select('*').from('users').leftJoin('accounts', 'users.id', 'accounts.user_id')
+            data = await mysql('excel')
+              // .leftJoin('stars', 'excel.id', 'stars.scId')
+              // .select('id', 'scKey', 'content', 'star')
+              .select('excel.*', 'stars.star')
+              .join('stars', 'excel.id', 'stars.scId')
+              // .where('openId', openId)
+              .limit(PAGE_SIZE)
+              .offset(Number(pageNum) * PAGE_SIZE)
         } else {
             data = await select
               .limit(PAGE_SIZE)

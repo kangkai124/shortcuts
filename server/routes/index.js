@@ -38,4 +38,7 @@ router.get('/demo', controllers.demo)
 // list
 router.get('/list', controllers.list)
 
+// star
+router.post('/star', controllers.star)
+
 module.exports = router

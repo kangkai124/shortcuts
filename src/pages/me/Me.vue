@@ -63,6 +63,10 @@ export default {
           that.showLogin = false
           wx.hideLoading()
           wx.setStorageSync('user', res)
+          const { from, current } = this.$root.$mp.query
+          if (from) {
+            wx.redirectTo({ url: `${from}?current=${current}` })
+          }
         },
         fail: err => {
           wx.hideLoading()

@@ -44,7 +44,7 @@
 </div>
 </template>
 <script>
-import { get, showLoading } from '../../utils'
+import { get, post, showLoading } from '../../utils'
 import defaultStar from '../../../static/image/star.png'
 import activeStar from '../../../static/image/star-color.png'
 
@@ -60,10 +60,12 @@ export default {
       userInfo: null
     }
   },
-  mounted () {
-    this.getShortCutList()
+  onShow () {
+    const { current } = this.$root.$mp.query
+    if (current) this.current = +current
     const userInfo = wx.getStorageSync('user')
     if (userInfo) this.userInfo = userInfo
+    this.getShortCutList()
   },
   methods: {
     onSlideChange (event, a) {
@@ -71,7 +73,12 @@ export default {
     },
     async getShortCutList () {
       showLoading('加载中...')
-      const res = await get('/weapp/list', { pageNum: 0, pageSize: 999 })
+      console.log(this.userInfo)
+      const res = await get('/weapp/list', {
+        pageNum: 0,
+        pageSize: 999,
+        openId: this.userInfo && this.userInfo.openId
+        })
       this.cards = res.data.list
       this.max = res.data.list.length - 1
       setTimeout(() => {
@@ -86,17 +93,30 @@ export default {
         urls: ['http://pcba4p0cq.bkt.clouddn.com/shortcuts/F1.png']
       })
     },
-    star () {
+    async star () {
       if (this.userInfo && this.userInfo.openId) {
         const card = this.cards[this.current]
-        const newCard = Object.assign({}, card, { star: true })
-        this.cards.splice(this.current, 1, newCard)
+        const body = {
+          scId: card.id,
+          openId: this.userInfo.openId
+        }
+        const res = await post('/weapp/star', body)
+        if (res.code === 0) {
+          const newCard = Object.assign({}, card, { star: true })
+          this.cards.splice(this.current, 1, newCard)
+        }
       } else {
+        const that = this
         wx.showModal({
-          title: '请先登录',
+          title: '未登录',
           content: '是否前往登录？',
           cancelText: '取消',
-          confirmText: '登录'
+          confirmText: '登录',
+          success (res) {
+            if (res.confirm) {
+              wx.navigateTo({ url: `/pages/me/main?from=/pages/card/main&current=${that.current}` })
+            }
+          }
         })
       }
     }
