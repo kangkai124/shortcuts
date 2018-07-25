@@ -73,7 +73,6 @@ export default {
     },
     async getShortCutList () {
       showLoading('加载中...')
-      console.log(this.userInfo)
       const res = await get('/weapp/list', {
         pageNum: 0,
         pageSize: 999,
