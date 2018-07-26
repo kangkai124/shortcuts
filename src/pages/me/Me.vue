@@ -1,11 +1,7 @@
 <template>
   <div class="container">
-    <div class="user-info">
-      <h2>
-        <img :src="avatar" alt="user avatar">
-      </h2>
-      <h3>
-        <button
+    <div class="login" v-if="showLogin">
+      <button
           v-if="showLogin"
           class="login"
           open-type="getUserInfo"
@@ -13,20 +9,29 @@
           @getuserinfo="doLogin">
             登录
         </button>
-        <p v-else>{{userInfo.nickName}}</p>
+    </div>
+    <div class="logined" v-else>
+      <div class="user-info">
+      <h2>
+        <img :src="avatar" alt="user avatar">
+      </h2>
+      <h3>
+        <p>{{userInfo.nickName}}</p>
       </h3>
-      <h4><img src="../../../static/image/right.png" alt="login"></h4>
     </div>
     <ul class="list">
       <li
         class="list-item"
+        :style="{ background: colors[i] }"
         @click="navigate(item.link)"
         v-for="(item, i) in list"
         :key="i">
-        <h2><img :src="item.icon" alt="item.text"></h2>
+        <!-- <h2><img :src="item.icon" alt="item.text"></h2> -->
         <h3>{{item.text}}</h3>
       </li>
     </ul>
+    </div>
+
   </div>
 </template>
 
@@ -36,15 +41,15 @@ import { showSuccess } from '@/utils'
 import { showFail } from '../../utils'
 import message from '../../../static/image/message.png'
 import like from '../../../static/image/like.png'
-import img from '../../../static/image/user.png'
-
+// #a8e6cf
 export default {
   data () {
     return {
       showLogin: true,
-      avatar: img,
+      avatar: '',
       userInfo: {},
-      list: []
+      list: [],
+      colors: ['rgba(168, 230, 207, 0.474)', 'rgba(168, 230, 207, 0.774)', '#a8e6cf', '#a8e7df']
     }
   },
   mounted () {
@@ -63,9 +68,9 @@ export default {
           that.showLogin = false
           wx.hideLoading()
           wx.setStorageSync('user', res)
-          const { from, current } = this.$root.$mp.query
+          const { from } = this.$root.$mp.query
           if (from) {
-            wx.redirectTo({ url: `${from}?current=${current}` })
+            wx.navigateBack({ delta: 1 })
           }
         },
         fail: err => {
@@ -86,17 +91,14 @@ export default {
     genList () {
       this.list = [
         { text: '消息中心', link: '/pages/message/main', icon: message },
-        { text: '我的收藏', link: '/pages/star/main', icon: like }
+        { text: '我的收藏', link: '/pages/star/main', icon: like },
+        { text: '关于我们', link: '/pages/star/main', icon: like },
+        { text: '意见反馈', link: '/pages/star/main', icon: like }
       ]
     },
     navigate (link) {
       wx.navigateTo({ url: link })
     }
-  },
-
-  created () {
-    // 调用应用实例的方法获取全局数据
-    // this.getUserInfo()
   }
 }
 </script>
@@ -105,96 +107,76 @@ export default {
 @import '../../styles/variables';
 
 .container {
+  // background: #a8e6cf;
 
   .user-info {
     width: 100%;
-    height: 80px;
-    display: flex;
-    background-color: #fff;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 20px;
+    height: 30vh;
 
     h2 {
-      flex: 2;
-      width: 60px;
-      height: 60px;
+      width: 100%;
+      height: 18vh;
       text-align: center;
 
       img {
-        margin-top: 6px;
-        width: 48px;
-        height: 48px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
-        background-color: @border_color;
       }
     }
 
     h3 {
-      flex: 3;
-
-      button {
-        border: none;
-        text-align: left;
-        color: #333;
-        font-size: 20px;
-        background-color: transparent;
-
-        &:active {
-          background-color: transparent;
-        }
-
-        &::after {
-          border: 0;
-        }
-      }
+      width: 100%;
+      height: 12vh;
+      line-height: 12vh;
+      text-align: center;
+      font-size: 30px;
 
       p {
         font-size: 20px;
       }
     }
-
-    h4 {
-      flex: 1;
-      text-align: center;
-
-      img {
-        width: 24px;
-        height: 24px;
-        margin-top: 10px;
-      }
-    }
   }
 
   .list {
+    width: 100%;
+    height: 70vh;
     overflow: hidden;
     list-style-type: none;
 
     li {
-      height: 36px;
-      display: flex;
-      background-color: #fff;
-      justify-content: space-around;
-      align-items: center;
-      margin-bottom: 10px;
+      font-family: "pingfang", sans-serif;
+      height: 26vh;
+      line-height: 26vh;
+      width: 40vw;
+      float: left;
+      margin: 20px 5vw;
+      text-align: center;
+      background-color: #2ee;
+      color: #333;
+      font-size: 20px;
+    }
+  }
+}
 
-      h2 {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+.login {
 
-        img {
-          width: 20px;
-          height: 20px;
-        }
-      }
+  button {
+    width: 80vw;
+    height: 60px;
+    line-height: 60px;
+    margin-top: calc(~'50vh - 30px');
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    background-color: #a8e6cf;
 
-      h3 {
-        flex: 4;
-        font-size: 16px;
-      }
+    &:active {
+      background-color: darken(#a8e6cf, 20%);
+    }
+
+    &::after {
+      border: 0;
     }
   }
 }

@@ -30,6 +30,7 @@ module.exports = async ctx => {
       data = allData.slice(start, end)
     }
   } else {
+    console.log(openId)
     if (openId) {
       const stars = await mysql('stars').select('scId').orderBy('scId')
         .map(s => s.scId)

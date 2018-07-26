@@ -20,7 +20,7 @@
       <div class="top">高频快捷键</div>
       <div class="tab-bar">
         <div @click="toCard">卡片浏览</div>
-        <div @click="toStar">我的收藏</div>
+        <div @click="toStar">个人中心</div>
       </div>
     </div>
   </div>

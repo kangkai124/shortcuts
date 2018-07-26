@@ -27,6 +27,7 @@ npm run build --report
 3. <del>用户登录页</del>
 4. <del>收藏页</del>
 5. <del>消息页</del>
+6. <del>卡片页收藏功能</del>
 6. 规范格式：请求参数名、返回格式和错误码，提示等等（doing）
 7. 增加权限（doing）
 8. 支持多参搜索（High）
@@ -34,8 +35,10 @@ npm run build --report
 10. navigateTo 等跳转失败封装
 11. 个人中心页、收藏页 UI 设计
 12. 测试截图的长宽比
+13. 快捷键表转utf-8后有些字符无法显示
 
 
 ## issues
 1. 首页跳转到列表页，返回后搜索框应该在中间，且不应该有从上下来的动画
 2. placeholder active 状态下 placeholder-class 属性不起作用
+3. 卡片页未登录收藏，跳登录回来，点左上角返回，会再次返回到卡片页

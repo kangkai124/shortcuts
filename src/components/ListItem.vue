@@ -16,7 +16,7 @@ export default {
   components: { Item },
   methods: {
     toCardPage (event) {
-      console.log(event)
+      console.log(event.target)
     }
   }
 }

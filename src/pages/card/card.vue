@@ -60,9 +60,14 @@ export default {
       userInfo: null
     }
   },
+  mounted () {
+    // const { current } = this.$root.$mp.query
+    // if (current) this.current = +current
+    // const userInfo = wx.getStorageSync('user')
+    // if (userInfo) this.userInfo = userInfo
+    // this.getShortCutList()
+  },
   onShow () {
-    const { current } = this.$root.$mp.query
-    if (current) this.current = +current
     const userInfo = wx.getStorageSync('user')
     if (userInfo) this.userInfo = userInfo
     this.getShortCutList()
@@ -73,11 +78,14 @@ export default {
     },
     async getShortCutList () {
       showLoading('加载中...')
-      const res = await get('/weapp/list', {
+      let body = {
         pageNum: 0,
         pageSize: 999,
-        openId: this.userInfo && this.userInfo.openId
-        })
+      }
+      if (this.userInfo && this.userInfo.openId) {
+        body.openId = this.userInfo.openId
+      }
+      const res = await get('/weapp/list', body)
       this.cards = res.data.list
       this.max = res.data.list.length - 1
       setTimeout(() => {
