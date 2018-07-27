@@ -28,6 +28,8 @@
 import { get, showLoading, showFail } from '../../utils'
 import ListItem from '../../components/ListItem'
 
+const orderbys = ['time', 'alp']
+
 export default {
   data () {
     return {
@@ -44,8 +46,11 @@ export default {
     this.userInfo = userInfo
     this.getMyStars()
   },
+  onPullDownRefresh () {
+    this.getMyStars(orderbys[this.value])
+  },
 /*  ===============================================
- * res 无法获取到 #stars 的信息
+ * res 无法获取到 #stars 的信息，==> setTimeout
   updated () {
     console.log(wx.getSystemInfoSync())
     const query = wx.createSelectorQuery()
@@ -77,8 +82,7 @@ export default {
       const value = parseInt(event.mp.detail.value)
       if (value !== this.value) {
         this.value = value
-        const orderby = ['time', 'alp']
-        this.getMyStars(orderby[value])
+        this.getMyStars(orderbys[value])
       }
     }
   }
@@ -108,7 +112,6 @@ export default {
 
   .list {
     overflow: hidden;
-    background-color: @background_color;
 
     .no-more {
       font-size: 12px;

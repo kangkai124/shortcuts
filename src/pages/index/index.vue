@@ -144,7 +144,7 @@ export default {
     .list {
       overflow: hidden;
       margin-top: 50px;
-      background-color: @background_color;
+      // background-color: @background_color;
 
       .no-more {
         font-size: 12px;

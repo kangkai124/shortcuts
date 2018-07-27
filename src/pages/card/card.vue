@@ -58,14 +58,20 @@ export default {
       dots: false,
       current: 0,
       max: 100,
-      userInfo: null
+      userInfo: null,
+      fresh: true
     }
   },
-  onShow () {
-    const userInfo = wx.getStorageSync('user')
-    if (userInfo) this.userInfo = userInfo
-    this.checkCurrent()
-    this.getShortCutList()
+  onShow (options) {
+    console.log('on show', options)
+    if (this.fresh) {
+      const userInfo = wx.getStorageSync('user')
+      if (userInfo) this.userInfo = userInfo
+      this.checkCurrent()
+      this.getShortCutList()
+    } else {
+      this.fresh = true
+    }
   },
   methods: {
     onSlideChange (event, a) {
@@ -95,6 +101,7 @@ export default {
       wx.previewImage({
         urls: ['http://pcba4p0cq.bkt.clouddn.com/shortcuts/F1.png']
       })
+      this.fresh = false
     },
     async star () {
       if (this.userInfo && this.userInfo.openId) {
