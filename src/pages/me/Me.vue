@@ -15,9 +15,7 @@
       <h2>
         <img :src="avatar" alt="user avatar">
       </h2>
-      <h3>
-        <p>{{userInfo.nickName}}</p>
-      </h3>
+      <h3>{{userInfo.nickName}}</h3>
     </div>
     <ul class="list">
       <li
@@ -41,7 +39,14 @@ import { showSuccess } from '@/utils'
 import { showFail } from '../../utils'
 import message from '../../../static/image/message.png'
 import like from '../../../static/image/like.png'
-// #a8e6cf
+
+const colors = [
+    'rgba(168, 230, 207, 0.474)',
+    'rgba(168, 230, 207, 0.774)',
+    '#a8e6cf',
+    '#a8e7df'
+  ]
+
 export default {
   data () {
     return {
@@ -49,13 +54,12 @@ export default {
       avatar: '',
       userInfo: {},
       list: [],
-      colors: ['rgba(168, 230, 207, 0.474)', 'rgba(168, 230, 207, 0.774)', '#a8e6cf', '#a8e7df']
+      colors
     }
   },
   mounted () {
     this.checkLogin()
     this.genList()
-    wx.setNavigationBarTitle({ title: '个人中心' })
   },
   methods: {
     doLogin (options) {
@@ -107,7 +111,13 @@ export default {
 @import '../../styles/variables';
 
 .container {
-  // background: #a8e6cf;
+  width: 100%;
+  height: 100%;
+}
+
+.logined {
+  height: 100%;
+  overflow: hidden;
 
   .user-info {
     width: 100%;
@@ -115,32 +125,30 @@ export default {
 
     h2 {
       width: 100%;
-      height: 18vh;
+      height: 20vh;
       text-align: center;
 
       img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
+        margin-top: 20px;
         border-radius: 50%;
       }
     }
 
     h3 {
       width: 100%;
-      height: 12vh;
-      line-height: 12vh;
+      height: 10vh;
       text-align: center;
-      font-size: 30px;
-
-      p {
-        font-size: 20px;
-      }
+      font-size: 20px;
     }
   }
 
   .list {
     width: 100%;
+    box-sizing: border-box;
     height: 70vh;
+    padding: 0 6.6vw;
     overflow: hidden;
     list-style-type: none;
 
@@ -150,11 +158,20 @@ export default {
       line-height: 26vh;
       width: 40vw;
       float: left;
-      margin: 20px 5vw;
+      margin-right: 6.8vw;
+      margin-bottom: 6.8vw;
       text-align: center;
       background-color: #2ee;
       color: #333;
       font-size: 20px;
+    }
+
+    li:nth-of-type(2n) {
+      margin-right: 0;
+    }
+
+    li:active {
+      filter: contrast(0.9) brightness(0.9);
     }
   }
 }

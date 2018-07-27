@@ -6,10 +6,7 @@ app.$mount()
 
 export default {
   config: {
-    // 'usingComponents': {
-    //   'i-input': '/iview/input/index'
-    // },
-    // enablePullDownRefresh: true,
+    navigationBarTitleText: '快捷键列表',
     onReachBottomDistance: 20
   }
 }

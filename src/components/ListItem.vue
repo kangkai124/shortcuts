@@ -1,6 +1,7 @@
 <template>
-  <div class="list-container" @click="toCardPage($event)">
+  <div class="list-container" data-hah='hah'>
     <div
+      @click="toCardPage"
       :data-id="item.id"
       class="list-item"
       v-for="item in list"
@@ -16,7 +17,8 @@ export default {
   components: { Item },
   methods: {
     toCardPage (event) {
-      console.log(event.target)
+      const scId = event.currentTarget.dataset.id
+      wx.navigateTo({ url: `/pages/card/main?scId=${scId}`})
     }
   }
 }

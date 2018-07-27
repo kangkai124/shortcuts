@@ -15,18 +15,19 @@
           <p>{{item.content}}</p>
           <div>
             <img
+              class="screenshot"
               @click.stop="preview"
               mode="aspectFit"
-              src="../../../static/image/F1.png"
+              src="../../../static/image/F1_k.jpg"
               alt="F1" />
           </div>
           <div class="icon-con">
               <img
-              class="icon"
-              @click="star"
-              mode="aspectFit"
-              :src="item.star ? activeStar : defaultStar"
-              alt="star" />
+                class="icon"
+                @click="star"
+                mode="aspectFit"
+                :src="item.star ? activeStar : defaultStar"
+                alt="star" />
           </div>
           </div>
       </swiper-item>
@@ -44,7 +45,7 @@
 </div>
 </template>
 <script>
-import { get, post, showLoading } from '../../utils'
+import { get, post, showLoading, showFail } from '../../utils'
 import defaultStar from '../../../static/image/star.png'
 import activeStar from '../../../static/image/star-color.png'
 
@@ -60,16 +61,10 @@ export default {
       userInfo: null
     }
   },
-  mounted () {
-    // const { current } = this.$root.$mp.query
-    // if (current) this.current = +current
-    // const userInfo = wx.getStorageSync('user')
-    // if (userInfo) this.userInfo = userInfo
-    // this.getShortCutList()
-  },
   onShow () {
     const userInfo = wx.getStorageSync('user')
     if (userInfo) this.userInfo = userInfo
+    this.checkCurrent()
     this.getShortCutList()
   },
   methods: {
@@ -88,6 +83,7 @@ export default {
       const res = await get('/weapp/list', body)
       this.cards = res.data.list
       this.max = res.data.list.length - 1
+      this.checkCurrent()
       setTimeout(() => {
         wx.hideLoading()
       }, 300)
@@ -107,24 +103,33 @@ export default {
           scId: card.id,
           openId: this.userInfo.openId
         }
-        const res = await post('/weapp/star', body)
-        if (res.code === 0) {
+        try {
+          const res = await post('/weapp/star', body)
           const newCard = Object.assign({}, card, { star: true })
           this.cards.splice(this.current, 1, newCard)
+        } catch (err) {
+          showFail('收藏失败，小口袋好像生病了哦')
         }
       } else {
         const that = this
         wx.showModal({
-          title: '未登录',
+          title: '没有登录不可以收藏哦',
           content: '是否前往登录？',
-          cancelText: '取消',
-          confirmText: '登录',
+          cancelText: '就不',
+          confirmText: '好的',
           success (res) {
             if (res.confirm) {
-              wx.navigateTo({ url: `/pages/me/main?from=/pages/card/main&current=${that.current}` })
+              wx.navigateTo({ url: `/pages/me/main?from=true` })
             }
           }
         })
+      }
+    },
+    checkCurrent () {
+      const { scId } = this.$root.$mp.query
+      if (scId && this.cards.length > 0) {
+        const index = this.cards.findIndex(c => c.id === Number(scId))
+        this.current = index
       }
     }
   }
@@ -167,9 +172,11 @@ export default {
       color: @sub_color;
     }
 
-    img {
-      width: 80%;
-      height: 20vh;
+    .screenshot {
+      width: 48vw;
+      height: 32vw;
+      border-radius: 4px;
+      border: 2px solid rgba(2, 164, 210, 0.6);
     }
 
     .icon-con {

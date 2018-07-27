@@ -4,7 +4,8 @@ module.exports = async (ctx) => {
   const { scId, openId } = ctx.request.body
   if (scId && openId) {
     try {
-      await mysql('stars').insert({ scId, openId })
+      const time = new Date()
+      await mysql('stars').insert({ scId, openId, time })
       ctx.state.data = {
         msg: 'success'
       }

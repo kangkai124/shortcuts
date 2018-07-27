@@ -1,12 +1,6 @@
 <template>
   <div class="container">
     <div class="top">
-      <img
-        class="icon"
-        mode="aspectFit"
-        src='../../../static/image/home_color.png'
-        alt="back"
-        @click="goBack" />
       <div class="fake-input">
         <input
           v-model="text"
@@ -16,7 +10,6 @@
           @blur="onTextBlur" />
         <h5 class="clear" @click="clearText">x</h5>
       </div>
-      <aside />
     </div>
     <div class="list" v-if="list.length > 0">
       <ListItem :list="list" :query="text" />
@@ -41,10 +34,7 @@ export default {
     }
   },
   components: { ListItem },
-  // 小程序钩子
-  onShow () {
-    wx.setNavigationBarTitle({ title: '快捷键列表' })
-    showLoading('加载中...')
+  onLoad () {
     const { query = '' } = this.$root.$mp.query
     this.text = query
     this.getShortCutList(true)
@@ -65,6 +55,7 @@ export default {
   },
   methods: {
     async getShortCutList (init, option) {
+      showLoading('加载中...')
       if (init) {
         this.pageNum = 0
         this.more = true
@@ -117,25 +108,12 @@ export default {
       position: fixed;
       top: 0;
       left: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-
-      .icon {
-        width: 20px;
-        height: 20px;
-        flex: 1;
-      }
-
-      aside {
-        flex: none;
-        width: 16px;
-      }
 
       .fake-input {
-        width: 84%;
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
         height: 30px;
-        flex: 7;
         display: flex;
         align-items: center;
         position: relative;
