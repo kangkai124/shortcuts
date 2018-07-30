@@ -21,9 +21,7 @@ module.exports = async (ctx) => {
     if (!openId) ctx.status = 401
     ctx.state = {
       code: 1,
-      data: {
-        msg: 'scId或者openId缺失'
-      }
+      msg: 'scId或者openId缺失'
     }
   }
 }

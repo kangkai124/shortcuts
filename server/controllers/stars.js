@@ -5,22 +5,27 @@ module.exports = async (ctx) => {
   if (!openId) {
     ctx.state = {
       code: 1,
-      data: {
-        msg: '缺少 openId'
-      }
+      msg: '缺少 openId'
     }
   } else {
     let rule = ['time', 'desc']
     if (orderby === 'alp') rule = ['scKey', 'asc']
-    const stars = await mysql('excel')
-      .select('excel.id', 'excel.scKey', 'excel.content')
-      .leftJoin('stars', 'excel.id', 'stars.scId')
-      .leftJoin('cSessionInfo', 'cSessionInfo.open_id', 'stars.openId')
-      .where('stars.openId', openId)
-      .orderBy(rule[0], rule[1])
+    try {
+      const stars = await mysql('excel')
+        .select('excel.id', 'excel.scKey', 'excel.content')
+        .leftJoin('stars', 'excel.id', 'stars.scId')
+        .leftJoin('cSessionInfo', 'cSessionInfo.open_id', 'stars.openId')
+        .where('stars.openId', openId)
+        .orderBy(rule[0], rule[1])
 
-    ctx.state.data = {
-      stars
+      ctx.state.data = {
+        stars
+      }
+    } catch (err) {
+      ctx.state = {
+        code: 1,
+        msg: err.message
+      }
     }
   }
 }

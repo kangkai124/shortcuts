@@ -62,15 +62,20 @@ export default {
         this.more = true
       }
       this.isFetching = true
-      const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
-      this.isFetching = false
-      wx.stopPullDownRefresh()
-      wx.hideLoading()
-      if (res.data.list.length < 20 && this.pageNum > 0) this.more = false
-      if (init) {
-        this.list = res.data.list
-      } else {
-        this.list = this.list.concat(res.data.list)
+      try {
+        const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
+        this.isFetching = false
+        wx.stopPullDownRefresh()
+        wx.hideLoading()
+        if (res.data.list.length < 20 && this.pageNum > 0) this.more = false
+        if (init) {
+          this.list = res.data.list
+        } else {
+          this.list = this.list.concat(res.data.list)
+        }
+      } catch (err) {
+        wx.hideLoading()
+        this.isFetching = false
       }
     },
     onTextChange () {

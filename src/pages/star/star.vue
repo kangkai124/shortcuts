@@ -67,10 +67,6 @@ export default {
       showLoading('加载中...')
       try {
         this.isFetching = true
-        // const res = await get('/weapp/stars', {
-        //   orderby,
-        //   openId: this.userInfo && this.userInfo.openId,
-        // })
         const res = await getW('/weapp/stars', { orderby })
         console.log(res)
         wx.hideLoading()
@@ -79,7 +75,7 @@ export default {
       } catch (err) {
         this.isFetching = false
         wx.hideLoading()
-        showFail(err.data.msg)
+        showFail(err.msg)
       }
     },
     onPickerChange (event) {

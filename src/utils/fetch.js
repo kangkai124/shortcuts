@@ -19,12 +19,12 @@ const request = (url, method, data) => new Promise((resolve, reject) => {
       if (res.data.code === 0) {
         resolve(res.data)
       } else {
-        console.error(res.data)
+        showFail(res.data.msg)
         reject(res.data)
       }
     },
     fail () {
-      showFail('网络连接失败，请检查您的网络', { duration: 2500 })
+      showFail('网络连接失败，请检查您的网络')
     }
   })
 })
