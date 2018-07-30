@@ -1,5 +1,3 @@
-import config from '../config'
-
 export const showSuccess = (title) => {
   wx.showToast({
     title,
@@ -7,10 +5,12 @@ export const showSuccess = (title) => {
   })
 }
 
-export const showFail = (title) => {
+export const showFail = (title, options) => {
   wx.showToast({
     title,
-    icon: 'none'
+    icon: 'none',
+    duration: 2500,
+    ...options
   })
 }
 
@@ -27,23 +27,3 @@ export const showModal = (title, content) => {
     showCancel: false
   })
 }
-
-const request = (url, method, data) => new Promise((resolve, reject) => {
-  wx.request({
-    data,
-    method,
-    url: config.host + url,
-    success (res) {
-      if (res.data.code === 0) {
-        resolve(res.data)
-      } else {
-        // showModal('失败', res.data.data.msg);
-        reject(res.data)
-      }
-    }
-  })
-})
-
-export const get = (url, data) => request(url, 'GET', data)
-
-export const post = (url, data) => request(url, 'POST', data)

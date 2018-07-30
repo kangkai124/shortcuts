@@ -18,6 +18,7 @@ module.exports = async (ctx) => {
       }
     }
   } else {
+    if (!openId) ctx.status = 401
     ctx.state = {
       code: 1,
       data: {

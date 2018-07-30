@@ -45,7 +45,8 @@
 </div>
 </template>
 <script>
-import { get, post, showLoading, showFail } from '../../utils'
+import { get, postW } from '../../utils/fetch'
+import { showLoading, showFail } from '../../utils'
 import defaultStar from '../../../static/image/star.png'
 import activeStar from '../../../static/image/star-color.png'
 
@@ -86,13 +87,18 @@ export default {
       if (this.userInfo && this.userInfo.openId) {
         body.openId = this.userInfo.openId
       }
-      const res = await get('/weapp/list', body)
-      this.cards = res.data.list
-      this.max = res.data.list.length - 1
-      this.checkCurrent()
-      setTimeout(() => {
+      try {
+        const res = await get('/weapp/list', body)
+        this.cards = res.data.list
+        this.max = res.data.list.length - 1
+        this.checkCurrent()
+        setTimeout(() => {
+          wx.hideLoading()
+        }, 300)
+      } catch (err) {
         wx.hideLoading()
-      }, 300)
+        console.log(err)
+      }
     },
     sliderChange (event) {
       this.current = event.mp.detail.value
@@ -104,33 +110,32 @@ export default {
       this.fresh = false
     },
     async star () {
-      if (this.userInfo && this.userInfo.openId) {
+      // if (this.userInfo && this.userInfo.openId) {
         const card = this.cards[this.current]
-        const body = {
-          scId: card.id,
-          openId: this.userInfo.openId
-        }
+        const body = { scId: card.id }
         try {
-          const res = await post('/weapp/star', body)
-          const newCard = Object.assign({}, card, { star: true })
-          this.cards.splice(this.current, 1, newCard)
+          const res = await postW('/weapp/star', body)
+          if (res) {
+            const newCard = Object.assign({}, card, { star: true })
+            this.cards.splice(this.current, 1, newCard)
+          }
         } catch (err) {
           showFail('收藏失败，小口袋好像生病了哦')
         }
-      } else {
-        const that = this
-        wx.showModal({
-          title: '没有登录不可以收藏哦',
-          content: '是否前往登录？',
-          cancelText: '就不',
-          confirmText: '好的',
-          success (res) {
-            if (res.confirm) {
-              wx.navigateTo({ url: `/pages/me/main?from=true` })
-            }
-          }
-        })
-      }
+      // } else {
+      //   const that = this
+      //   wx.showModal({
+      //     title: '没有登录不可以收藏哦',
+      //     content: '是否前往登录？',
+      //     cancelText: '就不',
+      //     confirmText: '好的',
+      //     success (res) {
+      //       if (res.confirm) {
+      //         wx.navigateTo({ url: `/pages/me/main?from=true` })
+      //       }
+      //     }
+      //   })
+      // }
     },
     checkCurrent () {
       const { scId } = this.$root.$mp.query

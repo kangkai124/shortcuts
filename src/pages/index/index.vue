@@ -19,7 +19,8 @@
   </div>
 </template>
 <script>
-import { get, showLoading } from '../../utils'
+import { get } from '../../utils/fetch'
+import { showLoading } from '../../utils'
 import ListItem from '../../components/ListItem'
 
 export default {
