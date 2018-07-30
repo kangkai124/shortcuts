@@ -110,7 +110,6 @@ export default {
       this.fresh = false
     },
     async star () {
-      // if (this.userInfo && this.userInfo.openId) {
         const card = this.cards[this.current]
         const body = { scId: card.id }
         try {
@@ -120,22 +119,8 @@ export default {
             this.cards.splice(this.current, 1, newCard)
           }
         } catch (err) {
-          showFail('收藏失败，小口袋好像生病了哦')
+          if (err.code) showFail('收藏失败，小口袋好像生病了哦')
         }
-      // } else {
-      //   const that = this
-      //   wx.showModal({
-      //     title: '没有登录不可以收藏哦',
-      //     content: '是否前往登录？',
-      //     cancelText: '就不',
-      //     confirmText: '好的',
-      //     success (res) {
-      //       if (res.confirm) {
-      //         wx.navigateTo({ url: `/pages/me/main?from=true` })
-      //       }
-      //     }
-      //   })
-      // }
     },
     checkCurrent () {
       const { scId } = this.$root.$mp.query

@@ -3,13 +3,7 @@ import { showFail } from './index'
 
 const getOpenId = () => {
   const userInfo = wx.getStorageSync('user')
-  const openId = userInfo && userInfo.openId
-  if (openId) {
-    return openId
-  } else {
-    wx.navigateTo({ url: `/pages/me/main?from=true` })
-    return false
-  }
+  return userInfo && userInfo.openId
 }
 
 const request = (url, method, data) => new Promise((resolve, reject) => {
@@ -18,6 +12,10 @@ const request = (url, method, data) => new Promise((resolve, reject) => {
     method,
     url: config.host + url,
     success (res) {
+      if (res.statusCode === 401) {
+        wx.navigateTo({ url: `/pages/me/main?from=true` })
+        reject(res.statusCode)
+      }
       if (res.data.code === 0) {
         resolve(res.data)
       } else {
@@ -25,9 +23,8 @@ const request = (url, method, data) => new Promise((resolve, reject) => {
         reject(res.data)
       }
     },
-    fail (err) {
+    fail () {
       showFail('网络连接失败，请检查您的网络', { duration: 2500 })
-      reject(err)
     }
   })
 })
