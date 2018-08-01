@@ -30,6 +30,5 @@ export default {
   // height: 40px;
   font-size: 14px;
   border-bottom: @base_border;
-  padding: 8px 10px;
 }
 </style>

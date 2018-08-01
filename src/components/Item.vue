@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div
+    class="sc-item"
+    :style="{ transform: test }"
+    @touchstart="touchstart"
+    @touchmove.stop="touchmove"
+    @touchend="touchend">
     <h2>
       <span
         :class="{highlight: item.color}"
@@ -12,15 +17,20 @@
         :key="i"
         v-for="(item, i) in content">{{item.text}}</span>
     </p>
+    <aside class="delete"><h5>删除</h5></aside>
   </div>
 </template>
 <script>
 export default {
-  props: ['item', "query"],
+  props: ['item', "query", "cancel"],
   data () {
     return {
       scKey: [],
-      content: []
+      content: [],
+      start: null,
+      move: null,
+      copy: 'translateX(0)',
+      test: 'translateX(0)'
     }
   },
   mounted () {
@@ -72,12 +82,72 @@ export default {
       } else {
         this.content = [ { text: this.item.content, color: false }]
       }
+    },
+    touchstart (event) {
+      event.stopPropagation()
+      this.start = event.pageX
+      // console.log('start', event.clientX)
+    },
+    touchmove (event) {
+      event.stopPropagation()
+      this.move = event.pageX
+      // console.log('move', event.clientX)
+    },
+    touchend (event) {
+      event.stopPropagation()
+      if (this.start - this.move > 0) {
+        this.test = 'translateX(-60px)'
+      } else {
+        this.test = 'translateX(0)'
+      }
+      this.start = null
+      this.move = null
+      this.itemTransform = 'translateX(-60px)'
     }
-  }
+  },
+  computed: {
+    itemTransform (props) {
+      if (this.start && this.move) {
+        const distance = Math.max(Math.min(this.move - this.start, 0), -60)
+        this.copy = `translateX(${distance}px)`
+        return `translateX(${distance}px)`
+      } else {
+        return this.copy
+      }
+    }
+  },
 }
 </script>
 <style lang="less">
 @import '../styles/variables';
+.sc-item {
+  padding: 8px 10px;
+  position: relative;
+  transition: transform .2s ease-in;
+
+  .delete {
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    right: -60px;
+    top: 0;
+    background-color: #f95959;
+    color: #fff;
+
+    h5 {
+      width: 100%;
+      height: 20px;
+      font-size: 18px;
+      font-weight: normal;
+      line-height: 20px;
+      position: absolute;
+      margin-top: -10px;
+      text-align: center;
+      top: 50%;
+      left: 0;
+    }
+  }
+}
 
 h2 {
   height: 24px;

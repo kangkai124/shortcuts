@@ -18,7 +18,7 @@
               class="screenshot"
               @click.stop="preview"
               mode="aspectFit"
-              src="../../../static/image/F1_k.jpg"
+              src="../../../static/image/F1.png"
               alt="F1" />
           </div>
           <div class="icon-con">
@@ -171,7 +171,7 @@ export default {
 
     .screenshot {
       width: 48vw;
-      height: 32vw;
+      height: 26vw;
       border-radius: 4px;
       border: 2px solid rgba(2, 164, 210, 0.6);
     }
