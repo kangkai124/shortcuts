@@ -15,8 +15,7 @@
       scroll-y="true"
       enable-back-to-top="true">
       <div id="stars" class="list" v-if="list.length > 0">
-        <ListItem :list="list" :query="text" />
-        <!-- <p class="no-more" v-if="!more">已经到最底部了</p> -->
+        <SwiperList :list="list" />
       </div>
       <div v-if="list.length === 0 && !isFetching" class="no-content">
         ╮(╯▽╰)╭ 还没有收藏哦
@@ -27,7 +26,7 @@
 <script>
 import { get, getW } from '../../utils/fetch'
 import { showLoading, showFail } from '../../utils'
-import ListItem from '../../components/ListItem'
+import SwiperList from '../../components/SwiperList'
 
 const orderbys = ['time', 'alp']
 
@@ -41,11 +40,14 @@ export default {
       range: ['时间', '字母']
     }
   },
-  components: { ListItem },
+  components: { SwiperList },
   onLoad () {
     const userInfo = wx.getStorageSync('user')
     this.userInfo = userInfo
     this.getMyStars()
+  },
+  onShow (a) {
+    console.log(a, 'onshow')
   },
   onPullDownRefresh () {
     this.getMyStars(orderbys[this.value])
@@ -113,11 +115,10 @@ export default {
   .list {
     overflow: hidden;
 
-    .no-more {
-      font-size: 12px;
-      color: @sub_color;
-      text-align: center;
-      padding: 10px 0;
+    .list-item {
+      // height: 40px;
+      font-size: 14px;
+      border-bottom: @base_border;
     }
   }
 
