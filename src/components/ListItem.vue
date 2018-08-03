@@ -12,6 +12,7 @@
 </template>
 <script>
 import Item from './Item'
+
 export default {
   props: ['list', 'query'],
   components: { Item },
@@ -27,7 +28,6 @@ export default {
 @import '../styles/variables';
 
 .list-item {
-  // height: 40px;
   font-size: 14px;
   border-bottom: @base_border;
 }

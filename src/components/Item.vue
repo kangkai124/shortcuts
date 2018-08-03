@@ -3,7 +3,7 @@
     class="sc-item"
     :style="{ transform: test }"
     @touchstart="touchstart"
-    @touchmove.stop="touchmove"
+    @touchmove="touchmove"
     @touchend="touchend">
     <h2>
       <span
@@ -17,7 +17,7 @@
         :key="i"
         v-for="(item, i) in content">{{item.text}}</span>
     </p>
-    <aside class="delete"><h5>删除</h5></aside>
+    <aside class="delete" @click="deleteStar"><h5>删除</h5></aside>
   </div>
 </template>
 <script>
@@ -103,6 +103,9 @@ export default {
       this.start = null
       this.move = null
       this.itemTransform = 'translateX(-60px)'
+    },
+    deleteStar () {
+
     }
   },
   computed: {
