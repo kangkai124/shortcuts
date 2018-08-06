@@ -68,7 +68,8 @@ export default {
     if (this.fresh) {
       const userInfo = wx.getStorageSync('user')
       if (userInfo) this.userInfo = userInfo
-      // this.checkCurrent()
+      // onShow 就要立马check
+      this.checkCurrent()
       this.getShortCutList()
     } else {
       this.fresh = true
@@ -91,7 +92,7 @@ export default {
         const res = await get('/weapp/list', body)
         this.cards = res.data.list
         this.max = res.data.list.length - 1
-        this.checkCurrent()
+        // this.checkCurrent()
         setTimeout(() => {
           wx.hideLoading()
         }, 300)
@@ -132,7 +133,7 @@ export default {
     async delStar (card) {
       try {
         const res = await delW('/weapp/star', { scId: card.id })
-        const newCard = Object.assign({}, card, { star: false })
+        const newCard = Object.assign({}, card, { star: false      })
         this.cards.splice(this.current, 1, newCard)
       } catch (err) {
         showFail(err.msg)

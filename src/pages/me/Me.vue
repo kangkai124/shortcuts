@@ -24,7 +24,6 @@
         @click="navigate(item.link)"
         v-for="(item, i) in list"
         :key="i">
-        <!-- <h2><img :src="item.icon" alt="item.text"></h2> -->
         <h3>{{item.text}}</h3>
       </li>
     </ul>
@@ -37,8 +36,6 @@
 import qcloud from 'wafer2-client-sdk'
 import { showSuccess } from '@/utils'
 import { showFail } from '../../utils'
-import message from '../../../static/image/message.png'
-import like from '../../../static/image/like.png'
 
 const colors = [
     'rgba(168, 230, 207, 0.474)',
@@ -94,10 +91,10 @@ export default {
     },
     genList () {
       this.list = [
-        { text: '消息中心', link: '/pages/message/main', icon: message },
-        { text: '我的收藏', link: '/pages/star/main', icon: like },
-        { text: '关于我们', link: '/pages/star/main', icon: like },
-        { text: '意见反馈', link: '/pages/star/main', icon: like }
+        { text: '消息中心', link: '/pages/message/main' },
+        { text: '我的收藏', link: '/pages/star/main' },
+        { text: '关于我们', link: '/pages/about/main' },
+        { text: '意见反馈', link: '/pages/contact/main' }
       ]
     },
     navigate (link) {
