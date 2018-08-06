@@ -13,8 +13,9 @@ module.exports = async (ctx) => {
       ctx.state = {
         code: 1,
         data: {
-          msg: `收藏失败：${err.sqlMessage}`
-        }
+
+        },
+        msg: `收藏失败：${err.sqlMessage}`
       }
     }
   } else {

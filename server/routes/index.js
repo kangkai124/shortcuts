@@ -44,4 +44,7 @@ router.post('/star', controllers.star)
 // stars
 router.get('/stars', controllers.stars)
 
+// del star
+router.delete('/star', controllers.delStar)
+
 module.exports = router

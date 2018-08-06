@@ -15,7 +15,7 @@
       scroll-y="true"
       enable-back-to-top="true">
       <div id="stars" class="list" v-if="list.length > 0">
-        <SwiperList :list="list" />
+        <SwiperList :list="list" @handleDetele="handleDetele" />
       </div>
       <div v-if="list.length === 0 && !isFetching" class="no-content">
         ╮(╯▽╰)╭ 还没有收藏哦
@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import { get, getW } from '../../utils/fetch'
+import { get, getW, delW } from '../../utils/fetch'
 import { showLoading, showFail } from '../../utils'
 import SwiperList from '../../components/SwiperList'
 
@@ -37,7 +37,24 @@ export default {
       userInfo: null,
       isFetching: true,
       value: 0,
-      range: ['时间', '字母']
+      range: ['时间', '字母'],
+      actions : [
+            {
+                name : '喜欢',
+                color : '#fff',
+                fontsize : '20',
+                width : 100,
+                icon : 'like',
+                background : '#ed3f14'
+            },
+            {
+                name : '返回',
+                width : 100,
+                color : '#80848f',
+                fontsize : '20',
+                icon : 'undo'
+            }
+        ]
     }
   },
   components: { SwiperList },
@@ -70,7 +87,6 @@ export default {
       try {
         this.isFetching = true
         const res = await getW('/weapp/stars', { orderby })
-        console.log(res)
         wx.hideLoading()
         this.isFetching = false
         this.list = res.data.stars
@@ -86,6 +102,15 @@ export default {
         this.value = value
         this.getMyStars(orderbys[value])
       }
+    },
+    async handleDetele (id) {
+      try {
+        const res = await delW('/weapp/star', { scId: id })
+        this.getMyStars(orderbys[this.value])
+      } catch (err) {
+        showFail(err.msg)
+      }
+
     }
   }
 }

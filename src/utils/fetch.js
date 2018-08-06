@@ -33,6 +33,8 @@ export const get = (url, data) => request(url, 'GET', data)
 
 export const post = (url, data) => request(url, 'POST', data)
 
+export const del = (url, data) => request(url, 'DELETE', data)
+
 export const getW = (url, data) => {
   const openId = getOpenId()
   return get(url, Object.assign({}, { openId }, data))
@@ -41,4 +43,9 @@ export const getW = (url, data) => {
 export const postW = (url, data) => {
   const openId = getOpenId()
   return post(url, Object.assign({}, { openId }, data))
+}
+
+export const delW = (url, data) => {
+  const openId = getOpenId()
+  return del(url, Object.assign({}, { openId }, data))
 }

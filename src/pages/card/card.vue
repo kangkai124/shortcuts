@@ -24,7 +24,7 @@
           <div class="icon-con">
               <img
                 class="icon"
-                @click="star"
+                @click="handleStar"
                 mode="aspectFit"
                 :src="item.star ? activeStar : defaultStar"
                 alt="star" />
@@ -45,7 +45,7 @@
 </div>
 </template>
 <script>
-import { get, postW } from '../../utils/fetch'
+import { get, postW, delW } from '../../utils/fetch'
 import { showLoading, showFail } from '../../utils'
 import defaultStar from '../../../static/image/star.png'
 import activeStar from '../../../static/image/star-color.png'
@@ -68,7 +68,7 @@ export default {
     if (this.fresh) {
       const userInfo = wx.getStorageSync('user')
       if (userInfo) this.userInfo = userInfo
-      this.checkCurrent()
+      // this.checkCurrent()
       this.getShortCutList()
     } else {
       this.fresh = true
@@ -109,8 +109,15 @@ export default {
       })
       this.fresh = false
     },
-    async star () {
-        const card = this.cards[this.current]
+    handleStar () {
+      const card = this.cards[this.current]
+      if (card.star) {
+        this.delStar(card)
+      } else {
+        this.star(card)
+      }
+    },
+    async star (card) {
         const body = { scId: card.id }
         try {
           const res = await postW('/weapp/star', body)
@@ -121,6 +128,15 @@ export default {
         } catch (err) {
           if (err.code) showFail('收藏失败，小口袋好像生病了哦')
         }
+    },
+    async delStar (card) {
+      try {
+        const res = await delW('/weapp/star', { scId: card.id })
+        const newCard = Object.assign({}, card, { star: false })
+        this.cards.splice(this.current, 1, newCard)
+      } catch (err) {
+        showFail(err.msg)
+      }
     },
     checkCurrent () {
       const { scId } = this.$root.$mp.query

@@ -2,15 +2,13 @@
   <div class="swiper-list">
     <div
       @tap="toCardPage"
-      @longpress="longpress(item.id, $event)"
+      @longpress="longpress(item, $event)"
       :data-id="item.id"
       class="list-item"
       v-for="item in list"
       :key="item.id">
       <Item :item="item" />
-      <!-- <aside class="delete" @click="deleteStar"><h5>删除</h5></aside> -->
     </div>
-    <aside :style="{ left: delBtn.x, top: delBtn.y, display: display }">删除</aside>
   </div>
 </template>
 <script>
@@ -21,11 +19,7 @@ export default {
   components: { Item },
   data () {
     return {
-      display: 'none',
-      delBtn: {
-        x: 0,
-        y: 0
-      }
+
     }
   },
   methods: {
@@ -37,13 +31,19 @@ export default {
         wx.navigateTo({ url: `/pages/card/main?scId=${scId}`})
       }
     },
-    longpress (id, event) {
-      const position = {
-        x: `${event.pageX}px`,
-        y: `${event.pageY}px`
-      }
-      this.delBtn = position
-      this.display = 'block'
+    longpress (item, event) {
+      console.log(item)
+      const _this = this
+      wx.showModal({
+        title: '移除收藏',
+        content: `确定要移除 '${item.scKey}' 吗`,
+        success (res) {
+          if (res.confirm) {
+            _this.$emit('handleDetele', item.id)
+            
+          }
+        }
+      })
     }
   }
 }
