@@ -15,6 +15,17 @@
           @blur="onTextBlur"
           @confirm="onInputConfirm" />
       </div>
+      <div class="history" v-if="!showBottom && history.length > 0">
+        <span>搜索历史</span>
+        <div class="history-list">
+          <div
+            @click="historyTap(item)"
+            :key="index"
+            v-for="(item, index) in history">
+            {{item}}
+          </div>
+        </div>
+      </div>
     </div>
     <div class="bottom" :style="{display: showBottom ? 'block': 'none' }">
       <div class="top">高频快捷键</div>
@@ -31,6 +42,7 @@ export default {
   data () {
     return {
       text: '',
+      history: [],
       canInput: false,
       focus: false,
       cancel: false,
@@ -44,7 +56,11 @@ export default {
     }
   },
   onShow () {
-    //
+    const history = wx.getStorageSync('history')
+    console.log(history)
+    if (history && history.length > 0) {
+      this.history = history
+    }
   },
   deactivated() {
     console.log('deactivated deactivated')
@@ -78,7 +94,11 @@ export default {
       }
     },
     onInputConfirm () {
-      wx.navigateTo({ url: `/pages/index/main?query=${this.text}` })
+      if (this.text === '') {
+        wx.navigateTo({ url: `/pages/index/main?query=${this.text}` })
+      } else {
+        this.handleConfirm(this.text)
+      }
     },
     onCancelClick () {
       this.text = ''
@@ -100,6 +120,25 @@ export default {
       this.focus = false
       this.cancel = false
       this.phClass = 'default-placeholder'
+    },
+    historyTap (text) {
+      console.log(text)
+      this.handleConfirm(text)
+    },
+    handleConfirm (text) {
+      let history = [ ...wx.getStorageSync('history') || [] ]
+      const index = history.indexOf(text)
+      if (index > -1) {
+        history.splice(index, 1)
+      }
+      history.unshift(text)
+      history = history.slice(0, 6)
+      try {
+      	wx.setStorageSync('history', history)
+        wx.navigateTo({ url: `/pages/index/main?query=${text}` })
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -138,6 +177,42 @@ export default {
           background-size: 28px;
           box-sizing: border-box;
         }
+      }
+
+      .history {
+        width: 100%;
+        height: 120px;
+        position: absolute;
+        left: 0;
+        bottom: -120px;
+        font-size: 12px;
+
+        span {
+          display: inline-block;
+          height: 20px;
+          line-height: 20px;
+        }
+
+        .history-list {
+          height: 100px;
+          overflow: hidden;
+
+          div {
+            float: left;
+            min-width: 30px;
+            text-align: center;
+            padding: 0 10px;
+            border-radius: 20px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            line-height: 40px;
+            background: @main_color;
+            color: #fff;
+            font-size: 14px;
+
+          }
+        }
+
       }
 
       aside {
