@@ -16,9 +16,9 @@
           <div>
             <img
               class="screenshot"
-              @click.stop="preview"
+              @click.stop="preview(item.scKey)"
               mode="aspectFit"
-              src="../../../static/image/F1.png"
+              :src="pre+item.scKey+'.jpg'"
               alt="F1" />
           </div>
           <div class="icon-con">
@@ -60,7 +60,8 @@ export default {
       current: 0,
       max: 100,
       userInfo: null,
-      fresh: true
+      fresh: true,
+      pre: 'http://pcba4p0cq.bkt.clouddn.com/shortcuts/v1/'
     }
   },
   onShow (options) {
@@ -104,9 +105,21 @@ export default {
     sliderChange (event) {
       this.current = event.mp.detail.value
     },
-    preview () {
+    preview (scKey) {
+      console.log(scKey)
+      const url = `${this.pre}${encodeURI(scKey)}.jpg`
+      // wx.getImageInfo({
+      //   src: url,
+      //   success (res) {
+      //     console.log(res)
+      //   },
+      //   fail (res) {
+      //     console.log(res)
+      //   }
+      // })
       wx.previewImage({
-        urls: ['http://pcba4p0cq.bkt.clouddn.com/shortcuts/F1.png']
+        urls: [url],
+
       })
       this.fresh = false
     },
@@ -188,7 +201,7 @@ export default {
 
     .screenshot {
       width: 48vw;
-      height: 26vw;
+      height: 32vw;
       border-radius: 4px;
       border: 2px solid rgba(2, 164, 210, 0.6);
     }

@@ -65,7 +65,6 @@ export default {
             { text, color: true },
             { text: last, color: false } ]
           this.content = content
-          console.log(content)
         } else {
           this.content = [{ text: this.item.content, color: false }]
         }

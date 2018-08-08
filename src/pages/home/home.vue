@@ -181,16 +181,16 @@ export default {
 
       .history {
         width: 100%;
-        height: 120px;
+        height: 140px;
         position: absolute;
         left: 0;
-        bottom: -120px;
+        bottom: -140px;
         font-size: 12px;
 
         span {
           display: inline-block;
-          height: 20px;
-          line-height: 20px;
+          height: 40px;
+          line-height: 40px;
         }
 
         .history-list {
@@ -208,7 +208,7 @@ export default {
             line-height: 40px;
             background: @main_color;
             color: #fff;
-            font-size: 14px;
+            font-size: 16px;
 
           }
         }
