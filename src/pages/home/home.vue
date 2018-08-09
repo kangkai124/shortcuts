@@ -57,7 +57,6 @@ export default {
   },
   onShow () {
     const history = wx.getStorageSync('history')
-    console.log(history)
     if (history && history.length > 0) {
       this.history = history
     }

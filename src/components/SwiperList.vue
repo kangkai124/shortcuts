@@ -7,7 +7,8 @@
       class="list-item"
       v-for="item in list"
       :key="item.id">
-      <Item :item="item" />
+      <h2>{{item.scKey}}</h2>
+      <p>{{item.content}}</p>
     </div>
   </div>
 </template>
@@ -40,7 +41,7 @@ export default {
         success (res) {
           if (res.confirm) {
             _this.$emit('handleDetele', item.id)
-            
+
           }
         }
       })
@@ -58,29 +59,16 @@ export default {
   .list-item {
     font-size: 14px;
     border-bottom: @base_border;
-    position: relative;
+    padding: 8px 10px;
 
-    .delete {
-      width: 60px;
-      height: 100%;
-      position: absolute;
-      right: -60px;
-      top: 0;
-      background-color: #f95959;
-      color: #fff;
+    h2 {
+      height: 24px;
+      line-height: 24px;
+    }
 
-      h5 {
-        width: 100%;
-        height: 20px;
-        font-size: 18px;
-        font-weight: normal;
-        line-height: 20px;
-        position: absolute;
-        margin-top: -10px;
-        text-align: center;
-        top: 50%;
-        left: 0;
-      }
+    p {
+      line-height: 16px;
+      color: @content_color;
     }
   }
 

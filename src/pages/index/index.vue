@@ -31,7 +31,9 @@ export default {
       list: [],
       text: '',
       placeholder: '请输入快捷键/功能...',
-      isFetching: true
+      isFetching: true,
+      timer: null,
+      hasLoad: false
     }
   },
   components: { ListItem },
@@ -56,17 +58,22 @@ export default {
   },
   methods: {
     async getShortCutList (init, option) {
-      showLoading('加载中...')
+      // this.timer = setTimeout(() => {
+        // clearTimeout(this.timer)
+      !this.hasLoad && showLoading('加载中...')
+      // }, 600)
       if (init) {
         this.pageNum = 0
         this.more = true
       }
       this.isFetching = true
       try {
-        const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey: this.text })
+        const scKey = this.text.split(' ').filter(x => x).join(',')
+        const res = await get('/weapp/list', option || { pageNum: this.pageNum, scKey })
         this.isFetching = false
         wx.stopPullDownRefresh()
         wx.hideLoading()
+        if (!this.hasLoad) this.hasLoad = true
         if (res.data.list.length < 20 && this.pageNum > 0) this.more = false
         if (init) {
           this.list = res.data.list
@@ -79,6 +86,7 @@ export default {
       }
     },
     onTextChange () {
+      // console.log(this.text)
       this.getShortCutList(true)
     },
     onTextFocus () {
@@ -93,7 +101,6 @@ export default {
       this.getShortCutList(true)
     },
     goBack () {
-      console.log('go back')
       wx.switchTab({ url: '/pages/home/main' })
     },
     clearText () {

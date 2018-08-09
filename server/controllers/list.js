@@ -4,14 +4,33 @@ const { difference } = require('ramda')
 module.exports = async ctx => {
   const { pageNum, scKey, pageSize, openId } = ctx.request.query
   const PAGE_SIZE = pageSize || 20
-  let data
+  let data = []
   let _err = {}
   const select = mysql('excel')
       .select('id', 'scKey', 'content')
 
   if (scKey) {
-    if (scKey.split(' ').length > 1) {
-
+    if (scKey.split(',').length > 1) {
+      try {
+        const keys = scKey.split(',')
+        const scKeys = await select
+          .where('scKey', 'like', `%${keys[0]}%`)
+          .andWhere('scKey', 'like', `%${keys[1]}%`)
+        const content = data = await select
+          .clearWhere()
+          .where('content', 'like', `%${keys[0]}%`)
+          .andWhere('content', 'like', `%${keys[1]}%`)
+        const withoutData = difference(content)(scKeys)
+        const allData = scKeys.concat(withoutData)
+        const start = pageNum * PAGE_SIZE
+        const end = pageNum * PAGE_SIZE + PAGE_SIZE
+        data = allData.slice(start, end)
+      } catch (err) {
+        _err = {
+          code: 1,
+          msg: err.message
+        }
+      }
     } else {
           // 单个参数查询
       try {

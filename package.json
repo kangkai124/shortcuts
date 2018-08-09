@@ -12,6 +12,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "jest": {
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.jsx?$",
     "testURL": "http://localhost/",
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
@@ -26,7 +27,8 @@
     },
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-vue"
-    ]
+    ],
+    "coverageReporters": ["html", "text-summary"]
   },
   "dependencies": {
     "mpvue": "^1.0.11",

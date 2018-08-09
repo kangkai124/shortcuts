@@ -10,3 +10,14 @@ exports[`List.vue matches snapshot 1`] = `
   </li>
 </ul>
 `;
+
+exports[`List.vue snapshot 匹配 1`] = `
+<ul>
+  <li>
+    item 1
+  </li>
+  <li>
+    item 2
+  </li>
+</ul>
+`;

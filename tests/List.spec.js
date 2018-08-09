@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils'
 import List from '@/components/List.vue'
 
 describe('List.vue', () => {
-  it('renders li for each item in props.items', () => {
+  it('渲染出每一个 li', () => {
     const items = ['1', '2']
     const wrapper = shallowMount(List, {
       propsData: { items }
@@ -11,7 +11,7 @@ describe('List.vue', () => {
     expect(wrapper.findAll('li')).toHaveLength(items.length)
   })
 
-  it('matches snapshot', () => {
+  it('snapshot 匹配', () => {
     const items = ['item 1', 'item 2']
     const wrapper = shallowMount(List, {
       propsData: { items }
