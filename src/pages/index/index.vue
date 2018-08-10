@@ -38,6 +38,7 @@ export default {
   },
   components: { ListItem },
   onLoad () {
+    console.log(this.$root.$mp.appOptions)
     const { query = '' } = this.$root.$mp.query
     this.text = query
     this.getShortCutList(true)

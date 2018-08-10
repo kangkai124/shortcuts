@@ -84,17 +84,20 @@ export default {
         })
         let _keys = [ ...keys ]
         let _indexs = [ ...indexs ]
-        if (indexs[0] > indexs[1]) {
-          _keys = [keys[1], keys[0]]
-          _indexs = [indexs[1], indexs[0]]
-        }
-        if (_keys[0].toLowerCase().includes(_keys[1].toLowerCase())) {
-          const realIndex = this.item.scKey.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
-          if (realIndex > -1) {
-            _indexs[1] = realIndex + _indexs[0] + _keys[0].length
-          } else {
-            _keys.splice(1,1)
-            _indexs.splice(1,2)
+        if (_keys[1]) {
+          if (indexs[0] > indexs[1]) {
+            _keys = [keys[1], keys[0]]
+            _indexs = [indexs[1], indexs[0]]
+          }
+
+          if (_keys[0].toLowerCase().includes(_keys[1].toLowerCase())) {
+            const realIndex = this.item.scKey.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
+            if (realIndex > -1) {
+              _indexs[1] = realIndex + _indexs[0] + _keys[0].length
+            } else {
+              _keys.splice(1,1)
+              _indexs.splice(1,2)
+            }
           }
         }
         if (_indexs.length === _keys.length && _indexs.length === 1) {
@@ -134,17 +137,19 @@ export default {
         })
         let _keys = [ ...keys ]
         let _indexs = [ ...indexs ]
-        if (indexs[0] > indexs[1]) {
-          _keys = [keys[1], keys[0]]
-          _indexs = [indexs[1], indexs[0]]
-        }
-        if (_keys[0].toLowerCase().includes(_keys[1].toLowerCase())) {
-          const realIndex = this.item.content.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
-          if (realIndex > -1) {
-            _indexs[1] = realIndex + _indexs[0] + _keys[0].length
-          } else {
-            _keys.splice(1,1)
-            _indexs.splice(1,2)
+        if (_keys[1]) {
+          if (indexs[0] > indexs[1]) {
+            _keys = [keys[1], keys[0]]
+            _indexs = [indexs[1], indexs[0]]
+          }
+          if (_keys[0].toLowerCase().includes(_keys[1].toLowerCase())) {
+            const realIndex = this.item.content.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
+            if (realIndex > -1) {
+              _indexs[1] = realIndex + _indexs[0] + _keys[0].length
+            } else {
+              _keys.splice(1,1)
+              _indexs.splice(1,2)
+            }
           }
         }
         if (_indexs.length === _keys.length && _indexs.length === 1) {
@@ -157,7 +162,6 @@ export default {
             return { text: e, color: i % 2 === 1 }
           })
         } else if (_indexs.length === _keys.length && _indexs.length === 2) {
-          console.log(_keys)
           const len1 = _keys[0].length
           const len2 = _keys[1].length
           const index1 = _indexs[0]

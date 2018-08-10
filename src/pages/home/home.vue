@@ -56,6 +56,7 @@ export default {
     }
   },
   onShow () {
+    console.log(this.$root.$mp.appOptions)
     const history = wx.getStorageSync('history')
     if (history && history.length > 0) {
       this.history = history
@@ -65,6 +66,7 @@ export default {
     console.log('deactivated deactivated')
   },
   onHide () {
+    console.log('hide')
     this.text = ''
     this.canInput = false
     this.focus = false

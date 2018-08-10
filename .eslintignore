@@ -1,4 +1,4 @@
 build/*.js
 config/*.js
-/_snapshots_/
+/__snapshots__/
 /coverage/
