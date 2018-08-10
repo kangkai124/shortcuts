@@ -1,5 +1,4 @@
 const { mysql } = require('../qcloud')
-const { difference } = require('ramda')
 
 module.exports = async ctx => {
   const { pageNum, scKey, pageSize, openId } = ctx.request.query
@@ -13,18 +12,11 @@ module.exports = async ctx => {
     if (scKey.split(',').length > 1) {
       try {
         const keys = scKey.split(',')
-        const scKeys = await select
-          .where('scKey', 'like', `%${keys[0]}%`)
-          .andWhere('scKey', 'like', `%${keys[1]}%`)
-        const content = data = await select
-          .clearWhere()
-          .where('content', 'like', `%${keys[0]}%`)
-          .andWhere('content', 'like', `%${keys[1]}%`)
-        const withoutData = difference(content)(scKeys)
-        const allData = scKeys.concat(withoutData)
-        const start = pageNum * PAGE_SIZE
-        const end = pageNum * PAGE_SIZE + PAGE_SIZE
-        data = allData.slice(start, end)
+        data = await select
+          .where('scKey', 'like', `%${keys[0]}%${keys[1]}%`)
+          .orWhere('content', 'like', `%${keys[0]}%${keys[1]}%`)
+          .limit(PAGE_SIZE)
+          .offset(Number(pageNum) * PAGE_SIZE)
       } catch (err) {
         _err = {
           code: 1,
@@ -32,23 +24,14 @@ module.exports = async ctx => {
         }
       }
     } else {
-          // 单个参数查询
+      // 单个参数查询
       try {
-        const highMatch = await select
+        data = await select
                 .where('scKey', 'like', `${scKey}%`)
-        const fuzzyMatch = await select
-                .clearWhere()
-                .where('scKey', 'like', `%${scKey}%`)
-        const contentMatch = await select
-                .clearWhere()
-                .where('content', 'like', `%${scKey}%`)
-        const withoutData = difference(fuzzyMatch)(highMatch)
-        const scKeyData = highMatch.concat(withoutData)
-        const onlyContentData = difference(contentMatch)(scKeyData)
-        const allData = scKeyData.concat(onlyContentData)
-        const start = pageNum * PAGE_SIZE
-        const end = pageNum * PAGE_SIZE + PAGE_SIZE
-        data = allData.slice(start, end)
+                .orWhere('scKey', 'like', `%${scKey}%`)
+                .orWhere('content', 'like', `%${scKey}%`)
+                .limit(PAGE_SIZE)
+                .offset(Number(pageNum) * PAGE_SIZE)
       } catch (err) {
         _err = {
           code: 1,
