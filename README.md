@@ -20,6 +20,8 @@ npm run build
 npm run build --report
 ```
 
+新进度更新到 [github projects](https://github.com/kangkai124/shortcuts/projects/1)
+
 ## TODO 👇🏼
 1. <del>搜索列表关键字高亮</del>
 1. <del>模糊搜索，同时支持快捷键和中文查询</del>

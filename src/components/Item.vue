@@ -88,7 +88,7 @@ export default {
           _keys = [keys[1], keys[0]]
           _indexs = [indexs[1], indexs[0]]
         }
-        if (_keys[0].includes(_keys[1])) {
+        if (_keys[0].toLowerCase().includes(_keys[1].toLowerCase())) {
           const realIndex = this.item.scKey.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
           if (realIndex > -1) {
             _indexs[1] = realIndex + _indexs[0] + _keys[0].length
@@ -138,7 +138,7 @@ export default {
           _keys = [keys[1], keys[0]]
           _indexs = [indexs[1], indexs[0]]
         }
-        if (_keys[0].includes(_keys[1])) {
+        if (_keys[0].toLowerCase().includes(_keys[1].toLowerCase())) {
           const realIndex = this.item.content.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
           if (realIndex > -1) {
             _indexs[1] = realIndex + _indexs[0] + _keys[0].length
