@@ -89,24 +89,24 @@ export default {
           _indexs = [indexs[1], indexs[0]]
         }
         if (_keys[0].includes(_keys[1])) {
-          const realIndex = this.item.scKey.slice(_keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
+          const realIndex = this.item.scKey.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
           if (realIndex > -1) {
-            _indexs[1] = realIndex + _keys[0].length
+            _indexs[1] = realIndex + _indexs[0] + _keys[0].length
           } else {
             _keys.splice(1,1)
             _indexs.splice(1,2)
           }
         }
-        if (indexs.length === keys.length && indexs.length === 1) {
-          const len = keys[0].length
-          const index = indexs[0]
+        if (_indexs.length === _keys.length && _indexs.length === 1) {
+          const len = _keys[0].length
+          const index = _indexs[0]
           const previous = this.item.scKey.slice(0, index)
           const text = this.item.scKey.slice(index, index + len)
           const last = this.item.scKey.slice(index + len)
           _scKey = [previous, text, last].map((e, i) => {
             return { text: e, color: i % 2 === 1 }
           })
-        } else if (indexs.length === keys.length && indexs.length === 2) {
+        } else if (_indexs.length === _keys.length && _indexs.length === 2) {
           const len1 = _keys[0].length
           const len2 = _keys[1].length
           const index1 = _indexs[0]
@@ -139,24 +139,25 @@ export default {
           _indexs = [indexs[1], indexs[0]]
         }
         if (_keys[0].includes(_keys[1])) {
-          const realIndex = this.item.scKey.slice(_keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
+          const realIndex = this.item.content.slice(_indexs[0] + _keys[0].length).toLowerCase().indexOf(_keys[1].toLowerCase())
           if (realIndex > -1) {
-            _indexs[1] = realIndex + _keys[0].length
+            _indexs[1] = realIndex + _indexs[0] + _keys[0].length
           } else {
             _keys.splice(1,1)
             _indexs.splice(1,2)
           }
         }
-        if (indexs.length === keys.length && indexs.length === 1) {
-          const len = keys[0].length
-          const index = indexs[0]
+        if (_indexs.length === _keys.length && _indexs.length === 1) {
+          const len = _keys[0].length
+          const index = _indexs[0]
           const previous = this.item.content.slice(0, index)
           const text = this.item.content.slice(index, index + len)
           const last = this.item.content.slice(index + len)
           _content = [previous, text, last].map((e, i) => {
             return { text: e, color: i % 2 === 1 }
           })
-        } else if (indexs.length === keys.length && indexs.length === 2) {
+        } else if (_indexs.length === _keys.length && _indexs.length === 2) {
+          console.log(_keys)
           const len1 = _keys[0].length
           const len2 = _keys[1].length
           const index1 = _indexs[0]

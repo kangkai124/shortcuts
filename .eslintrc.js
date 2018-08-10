@@ -1,4 +1,4 @@
-// http://eslint.org/docs/user-guide/configuring
+// https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
   root: true,
@@ -34,5 +34,13 @@ module.exports = {
     getApp: true,
     getPage: true,
     requirePlugin: true
-  }
+  },
+  overrides: [
+    {
+      files: ['*-test.js', '*.spec.js'],
+      rules: {
+        'no-undef' : 'off'
+      }
+    }
+  ]
 }
