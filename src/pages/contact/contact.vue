@@ -1,6 +1,6 @@
 <template>
   <div class="contact">
-    <h3>扫码改需求</h3>
+    <h3>扫码该需求，爱扫不扫🤔</h3>
     <img src='../../../static/image/pay.jpg' mode="aspectFit" />
   </div>
 </template>
@@ -18,7 +18,10 @@ export default {
   text-align: center;
 
   h3 {
+    font-weight: normal;
+    font-size: 18px;
     height: 40px;
+    font-family: kaiti;
   }
 
   img {

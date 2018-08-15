@@ -6,6 +6,6 @@ app.$mount()
 
 export default {
   config: {
-    navigationBarTitleText: '意见反馈'
+    navigationBarTitleText: '意见反馈👨‍💻'
   }
 }
