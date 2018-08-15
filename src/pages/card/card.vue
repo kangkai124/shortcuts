@@ -7,7 +7,6 @@
     previous-margin="60px"
     next-margin="60px"
     duration="200"
-    @click.stop="preview(item.scKey)"
     @change="onSlideChange">
     <div :key="i" v-for="(item, i) in cards">
       <swiper-item>
@@ -18,6 +17,7 @@
             <div class="cover">
               <img
                 class="screenshot"
+                @click.stop="preview(imgs[i])"
                 mode="aspectFit"
                 :src="imgs[i]"
                 alt="F1" />
@@ -66,8 +66,8 @@ export default {
       imgs: []
     }
   },
-  onShow (options) {
-    console.log('on show', options)
+  onShow () {
+    console.log('card page', this.$root.$mp.appOptions)
     if (this.fresh) {
       const userInfo = wx.getStorageSync('user')
       if (userInfo) this.userInfo = userInfo
@@ -112,12 +112,17 @@ export default {
     sliderChange (event) {
       this.current = event.mp.detail.value
     },
-    preview (scKey) {
-      console.log(scKey)
-      const url = `${this.pre}${encodeURI(scKey)}.jpg`
-      wx.previewImage({
-        urls: [url],
-
+    preview (imgUrl) {
+      wx.getImageInfo({
+        src: imgUrl,
+        success (res) {
+          wx.previewImage({
+            urls: [imgUrl]
+          })
+        },
+        fail (res) {
+          showFail(res.errMsg)
+        }
       })
       this.fresh = false
     },
