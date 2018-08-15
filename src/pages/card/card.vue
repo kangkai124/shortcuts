@@ -7,6 +7,7 @@
     previous-margin="60px"
     next-margin="60px"
     duration="200"
+    @click.stop="preview(item.scKey)"
     @change="onSlideChange">
     <div :key="i" v-for="(item, i) in cards">
       <swiper-item>
@@ -14,12 +15,13 @@
           <h2>{{item.scKey}}</h2>
           <p>{{item.content}}</p>
           <div>
-            <img
-              class="screenshot"
-              @click.stop="preview(item.scKey)"
-              mode="aspectFit"
-              :src="pre+item.scKey+'.jpg'"
-              alt="F1" />
+            <div class="cover">
+              <img
+                class="screenshot"
+                mode="aspectFit"
+                :src="imgs[i]"
+                alt="F1" />
+            </div>
           </div>
           <div class="icon-con">
               <img
@@ -61,7 +63,7 @@ export default {
       max: 100,
       userInfo: null,
       fresh: true,
-      pre: 'http://pcba4p0cq.bkt.clouddn.com/shortcuts/v1/'
+      imgs: []
     }
   },
   onShow (options) {
@@ -91,9 +93,14 @@ export default {
       }
       try {
         const res = await get('/weapp/list', body)
-        this.cards = res.data.list
+        const list = res.data.list
+        if (list.length > 0) {
+          const prefix = 'http://pcba4p0cq.bkt.clouddn.com/shortcuts/v2/'
+          const imgs = list.map(l => `${prefix}${encodeURIComponent(l.scKey)}.jpg`)
+          this.cards = res.data.list
+          this.imgs = imgs
+        }
         this.max = res.data.list.length - 1
-        // this.checkCurrent()
         setTimeout(() => {
           wx.hideLoading()
         }, 300)
@@ -108,15 +115,6 @@ export default {
     preview (scKey) {
       console.log(scKey)
       const url = `${this.pre}${encodeURI(scKey)}.jpg`
-      // wx.getImageInfo({
-      //   src: url,
-      //   success (res) {
-      //     console.log(res)
-      //   },
-      //   fail (res) {
-      //     console.log(res)
-      //   }
-      // })
       wx.previewImage({
         urls: [url],
 
@@ -178,8 +176,6 @@ export default {
     border-radius: 6px;
     box-shadow: 2px 4px 8px #a8e6cf;
     transition: all .2s ease-in-out;
-    // border: 1px solid #a8e6cf;
-    // background-color: #fff;
     text-align: center;
     background: url(http://pcba4p0cq.bkt.clouddn.com/card-bg.jpg) no-repeat;
     background-size: cover;
@@ -199,11 +195,19 @@ export default {
       color: @sub_color;
     }
 
-    .screenshot {
+    .cover {
       width: 48vw;
       height: 32vw;
       border-radius: 4px;
+      overflow: hidden;
       border: 2px solid rgba(2, 164, 210, 0.6);
+      margin: 0 auto;
+      background-color: rgba(238, 235, 235, 0.4);
+    }
+
+    .screenshot {
+      width: 48vw;
+      height: 32vw;
     }
 
     .icon-con {
@@ -217,8 +221,8 @@ export default {
     }
 
     .icon:active {
-      transform: scale(1.2)
-;    }
+      transform: scale(1.2);
+    }
   }
 
   .normal {

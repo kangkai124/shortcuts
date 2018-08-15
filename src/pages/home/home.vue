@@ -157,7 +157,7 @@ export default {
       top: 30%;
       left: 50%;
       transform: translateX(-50%);
-      transition: all 0.2s ease-in-out;
+      transition: all 0.16s ease-in-out;
 
 
       .fake-input {
