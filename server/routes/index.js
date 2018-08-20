@@ -47,4 +47,7 @@ router.get('/stars', controllers.stars)
 // del star
 router.delete('/star', controllers.delStar)
 
+// messages
+router.get('/messages', controllers.messages)
+
 module.exports = router
