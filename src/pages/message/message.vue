@@ -22,11 +22,13 @@ export default {
     }
   },
   onLoad () {
+    wx.showLoading()
     this.getMessages()
   },
   methods: {
     async getMessages () {
       const res = await get('/weapp/messages')
+      wx.hideLoading()
       this.messages = res.data.list
     },
     onClick (id) {

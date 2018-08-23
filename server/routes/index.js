@@ -50,4 +50,7 @@ router.delete('/star', controllers.delStar)
 // messages
 router.get('/messages', controllers.messages)
 
+// syncMessage
+router.get('/sync', controllers.syncMessage)
+
 module.exports = router

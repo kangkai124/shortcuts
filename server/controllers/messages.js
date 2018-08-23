@@ -1,7 +1,7 @@
 const { mysql } = require('../qcloud')
 
 module.exports = async (ctx) => {
-  const { messageId } = ctx.request.query
+  const { messageId, openId } = ctx.request.query
   if (messageId) {
     try {
       const messages = await mysql('messages')
@@ -16,9 +16,13 @@ module.exports = async (ctx) => {
         msg: err.message
       }
     }
-  } else {
+  } else if (openId) {
     const messages = await mysql('messages')
-      .select('id', 'title', 'subTitle')
+      .select('messages.id', 'messages.title', 'messages.subTitle', 'newMessages.userId')
+      .raw('case when newMessages.index is null then 0 else newMessages.index end index')
+      .leftJoin('newMessages', 'messages.id', 'newMessages.messageId')
+      .where('userId', openId)
+      .orWhere('userId', null)
       .orderBy('id', 'desc')
 
     ctx.state.data = {

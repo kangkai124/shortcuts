@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import Item from './Item'
+import Item from './NewItem'
 
 export default {
   props: ['list', 'query'],
