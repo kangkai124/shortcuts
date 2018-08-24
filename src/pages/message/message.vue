@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import { get } from '../../utils/fetch'
+import { getW } from '../../utils/fetch'
 export default {
   data () {
     return {
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     async getMessages () {
-      const res = await get('/weapp/messages')
+      const res = await getW('/weapp/messages')
       wx.hideLoading()
       this.messages = res.data.list
     },
