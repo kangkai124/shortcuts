@@ -53,4 +53,7 @@ router.get('/messages', controllers.messages)
 // syncMessage
 router.get('/sync', controllers.syncMessage)
 
+// 已读消息
+router.del('/read', controllers.read)
+
 module.exports = router

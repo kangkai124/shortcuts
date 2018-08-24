@@ -2,10 +2,10 @@
   <div class="star">
     <div class="blank" v-if="messages.length === 0">暂时没有什么消息...</div>
     <div class="content" v-else>
-      <section v-for="item in messages" :key="item.id" @click="onClick(item.id)">
+      <section v-for="item in messages" :key="item.id" @click="onClick(item.id, item.index)">
         <div class="title">
           {{item.title}}
-        <aside><img mode="aspectFit" src="../../../static/image/new.png" /></aside>
+        <aside v-show="item.index"><img mode="aspectFit" src="../../../static/image/new.png" /></aside>
         </div>
         <div class="sub-title">{{item.subTitle}}</div>
         <div class="detail">→查看详情</div>
@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import { getW } from '../../utils/fetch'
+import { getW, delW } from '../../utils/fetch'
 export default {
   data () {
     return {
@@ -31,8 +31,11 @@ export default {
       wx.hideLoading()
       this.messages = res.data.list
     },
-    onClick (id) {
-      console.log(id)
+    async onClick (id, unRead) {
+      if (unRead) {
+        await delW('/weapp/read', { id })
+        this.getMessages()
+      }
       wx.navigateTo({ url: `/pages/messageDetail/main?messageId=${id}` })
     }
   }

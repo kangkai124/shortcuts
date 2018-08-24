@@ -17,7 +17,7 @@ module.exports = async (ctx) => {
       }
     }
   } else if (openId) {
-    const messages = await mysql.raw('SELECT id, title, subTitle, userId, CASE WHEN `index` IS NULL THEN 0 else `index` END `index` FROM messages LEFT JOIN (SELECT * FROM newMessages WHERE userId = ?) t ON id = messageId', openId)
+    const messages = await mysql.raw('SELECT id, title, subTitle, userId, CASE WHEN `index` IS NULL THEN 0 else `index` END `index` FROM messages LEFT JOIN (SELECT * FROM newMessages WHERE userId = ?) t ON id = messageId ORDER BY id DESC', openId)
     // const messages = await mysql.with('f', qb => {
     //   qb.select().from('newMessages').where('userId', openId)
     // }).select().from('f')
@@ -28,7 +28,6 @@ module.exports = async (ctx) => {
     //   .where('newMessages.userId', openId)
     //   .orWhere('newMessages.userId', null)
     //   .orderBy('id', 'desc')
-    console.log(messages)
 
     ctx.state.data = {
       list: messages[0]
